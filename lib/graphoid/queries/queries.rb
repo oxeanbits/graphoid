@@ -37,6 +37,7 @@ module Graphoid
       query_type.class_eval do
         define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
           begin
+            binding.pry
             model = Graphoid.driver.eager_load(context.irep_node, model)
             result = Processor.execute(model, where.to_h)
             order = Processor.parse_order(model, order.to_h)
