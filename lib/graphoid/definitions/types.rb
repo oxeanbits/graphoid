@@ -104,8 +104,6 @@ module Graphoid
           limit = args['limit']
           skip = args['skip']
 
-          binding.pry
-
           processor = Graphoid::Queries::Processor
 
           result = obj.send(association.name)
