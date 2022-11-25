@@ -9,6 +9,7 @@ module Graphoid
       def generate(model)
         binding.pry if model == Record
         LIST[model] ||= GraphQL::InputObjectType.define do
+          binding.pry if model == Record
           name("#{Utils.graphqlize(model.name)}Sorter")
           description("Generated model Sorter for #{model.name}")
 
