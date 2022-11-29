@@ -12,7 +12,6 @@ module Graphoid
           name("#{Utils.graphqlize(model.name)}Sorter")
           description("Generated model Sorter for #{model.name}")
 
-          binding.pry if model == Record
           Attribute.fields_of(model).each do |field|
             name = Utils.camelize(field.name)
             next argument(name, Sorter.dynamic_type) if name == 'dynamicFields'
