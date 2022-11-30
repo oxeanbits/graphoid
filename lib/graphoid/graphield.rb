@@ -11,7 +11,7 @@ module Graphoid
       class << self
         def graphield(name, type, opts = {})
           binding.pry
-          @graphields << Graphoid::Attribute.new(name: name.to_s, type: type)
+          @graphields << Graphoid::Attribute.new(name: name.to_s, type: type, opts: opts)
         end
 
         def graphorbid(field, *actions)
