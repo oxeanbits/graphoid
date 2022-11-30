@@ -15,7 +15,7 @@ module Graphoid
           Attribute.fields_of(model).each do |field|
             name = Utils.camelize(field.name)
             binding.pry if name == 'dynamicFields'
-            next argument(name, Sorter.dynamic_type) if field.opts[:dynamic]
+            # next argument(name, Sorter.dynamic_type) if field.opts[:dynamic]
             argument(name, Sorter.enum_type)
           end
 
