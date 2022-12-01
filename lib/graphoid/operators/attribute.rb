@@ -16,7 +16,6 @@ module Graphoid
     def dynamic?
       @opts[:dynamic] == true
     end
-    end
 
     def resolve(o)
       Graphoid.driver.parse(o.operand, o.value, o.operator)
