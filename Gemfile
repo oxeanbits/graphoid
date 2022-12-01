@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.4.5'
+ruby '2.5.5'
 
 gemspec
 
 gem 'graphql'
 
-gem "nokogiri", ">= 1.10.4"
+gem 'nokogiri', '>= 1.10.4'
+
+gem 'activemodel', '>= 5.1'
+gem 'actionpack', '>= 6.0.1'
 
 group :development, :test do
   gem 'byebug'
@@ -18,6 +21,6 @@ group :test do
   gem 'mongoid'
   gem 'mongoid-rspec'
   gem 'rspec'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 6.0'
   gem 'sqlite3'
 end
