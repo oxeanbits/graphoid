@@ -11,6 +11,11 @@ module Graphoid
       @camel_name = Utils.camelize(@name)
       @type = type
       @opts = opts
+    end    
+   
+    def dynamic?
+      @opts[:dynamic] == true
+    end
     end
 
     def resolve(o)
