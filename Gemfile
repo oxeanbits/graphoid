@@ -15,6 +15,10 @@ gem 'actionpack', '>= 6.0.1'
 group :development, :test do
   gem 'byebug'
   gem 'simplecov', require: false
+  gem 'pry-rails', '~> 0.3.4'
+
+  # Adds step-by-step debugging and stack navigation capabilities to pry using byebug.
+  gem 'pry-byebug'
 end
 
 group :test do
