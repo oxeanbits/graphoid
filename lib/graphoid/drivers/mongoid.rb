@@ -62,6 +62,7 @@ module Graphoid
       end
 
       def types_map
+        binding.pry
         {
           BSON::ObjectId => GraphQL::Types::ID,
           Mongoid::Boolean => GraphQL::Types::Boolean,
