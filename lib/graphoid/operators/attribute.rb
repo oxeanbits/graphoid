@@ -2,14 +2,19 @@
 
 module Graphoid
   class Attribute
-    attr_reader :name, :type
+    attr_reader :name, :type, :opts
 
     PERMS = %i[read create update delete]
 
-    def initialize(name:, type:)
+    def initialize(name:, type:, opts: {})
       @name = name.to_s
       @camel_name = Utils.camelize(@name)
       @type = type
+      @opts = opts
+    end    
+   
+    def dynamic?
+      @opts[:dynamic] == true
     end
 
     def resolve(o)

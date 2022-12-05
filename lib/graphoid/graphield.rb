@@ -9,8 +9,8 @@ module Graphoid
       @forbidden = {}
 
       class << self
-        def graphield(name, type)
-          @graphields << Graphoid::Attribute.new(name: name.to_s, type: type)
+        def graphield(name, type, opts = {})
+          @graphields << Graphoid::Attribute.new(name: name.to_s, type: type, opts: opts)
         end
 
         def graphorbid(field, *actions)

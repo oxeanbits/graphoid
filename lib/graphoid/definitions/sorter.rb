@@ -4,6 +4,7 @@ module Graphoid
   module Sorter
     LIST = {}
     @@enum_type = nil
+    @@dynamic_type = nil
 
     class << self
       def generate(model)
@@ -13,6 +14,7 @@ module Graphoid
 
           Attribute.fields_of(model).each do |field|
             name = Utils.camelize(field.name)
+            next argument(name, Sorter.dynamic_type) if field.dynamic?
             argument(name, Sorter.enum_type)
           end
 
@@ -37,6 +39,10 @@ module Graphoid
           value 'ASC', 'Ascendent'
           value 'DESC', 'Descendent'
         end
+      end
+
+      def dynamic_type
+        @@dynamic_type ||= Graphoid::Scalars::Hash
       end
     end
   end

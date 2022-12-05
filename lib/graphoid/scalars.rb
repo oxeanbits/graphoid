@@ -77,6 +77,16 @@ module Graphoid
         Graphoid::Scalars::Hash ||= GraphQL::ScalarType.define do
           name 'Hash'
           description 'Hash scalar'
+
+          def self.coerce_input(input_value, _context)
+            input_value.to_h
+          rescue StandardError
+            raise GraphQL::CoercionError, "#{input_value.inspect} is not a valid Hash"
+          end
+
+          def self.coerce_result(ruby_value, _context)
+            ruby_value.to_h
+          end
         end
 
         Graphoid::Scalars::Array ||= GraphQL::ScalarType.define do
