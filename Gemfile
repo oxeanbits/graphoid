@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.5.5'
+ruby '2.7.7'
 
 gemspec
 
 gem 'graphql'
 
-gem 'nokogiri', '>= 1.10.4'
+gem 'nokogiri', '~> 1.13.9'
 
 gem 'activemodel', '>= 5.1'
 gem 'actionpack', '>= 6.0.1'
