@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    types: [opened, synchronize, edited, reopened, review_requested, ready_for_review]
+    types: [opened, synchronize, reopened]
     paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
 
 env:
