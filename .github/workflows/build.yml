@@ -21,6 +21,7 @@ jobs:
         id: depends
         run: |
           sudo apt-get update
+          sudo apt-get remove ruby
           sudo apt-get install build-essential software-properties-common
           sudo apt-add-repository -y ppa:rael-gc/rvm
           sudo apt-get install rvm
