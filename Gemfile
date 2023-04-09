@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '~> 2.7'
+ruby '>= 2.7.0'
 
 gemspec
 
-gem 'graphql', '~> 1.8.18'
+#gem 'graphql', '~> 1.8.0'
+gem 'graphql', git: 'https://github.com/oxeanbits/graphql-ruby.git', branch: 'ruby3-1.8.18'
 
 gem 'nokogiri', '~> 1.13.9'
 
