@@ -17,4 +17,5 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'graphql', '~> 1.8.0'
   gem.add_dependency 'rails', '~> 6'
+  gem.add_dependency 'nokogiri', '~> 1.13.9'
 end
