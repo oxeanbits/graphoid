@@ -25,6 +25,8 @@ jobs:
           sudo apt-add-repository -y ppa:rael-gc/rvm
           sudo apt-get install rvm
           sudo usermod -a -G rvm $USER
+          source /etc/profile.d/rvm.sh
+          rvm install ruby-2.7.7
 
       - name: Tests
         id: rspec
