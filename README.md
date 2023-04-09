@@ -1,10 +1,9 @@
 
 <img src="https://cl.ly/aeaacddab2e2/graphoid.png" height="150" alt="graphoid"/>
 
-[![Build Status](https://travis-ci.org/maxiperezc/graphoid.svg?branch=master)](https://travis-ci.org/maxiperezc/graphoid)
-[![Gem Version](https://badge.fury.io/rb/graphoid.svg)](https://rubygems.org/gems/graphoid)
+[![CI](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml)
+[![Gem Version](https://img.shields.io/badge/gem%20version-0.2.0-green)](https://rubygems.org/gems/graphoid)
 [![Maintainability](https://api.codeclimate.com/v1/badges/96505308310ca4e7e241/maintainability)](https://codeclimate.com/github/maxiperezc/graphoid/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/96505308310ca4e7e241/test_coverage)](https://codeclimate.com/github/maxiperezc/graphoid/test_coverage)
 
 Generates a full GraphQL API using introspection of Mongoid or ActiveRecord models.
 
@@ -20,7 +19,7 @@ Please install that gem first before continuing
 Add this line to your Gemfile:
 
 ```ruby
-gem 'graphoid'
+gem 'graphoid', git: 'https://github.com/oxeanbits/graphoid.git', tag: '0.2.0'
 ```
 
 ```bash
