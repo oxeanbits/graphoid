@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
+        ruby: ['2.7.7', '2.7.8']
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
 
     steps:
@@ -24,31 +25,21 @@ jobs:
         id: checkout
         uses: actions/checkout@v1
 
-      - name: Dependencies
-        id: depends
-        run: |
-          sudo apt-get update
-          sudo apt-get remove ruby
-          sudo apt-get install build-essential software-properties-common
-          sudo apt-add-repository -y ppa:rael-gc/rvm
-          sudo apt-get install rvm
-          sudo usermod -a -G rvm $USER
-          source /etc/profile.d/rvm.sh
-          rvm install ruby-2.7.7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
 
       - name: Gems
         id: gems
         run: |
-          source /etc/profile.d/rvm.sh
-          rvm use 2.7.7
           gem install bundler:2.4.10
           bundle install -j 5
 
       - name: Tests Active Record
         id: rspec-ar
         run: |
-          source /etc/profile.d/rvm.sh
-          rvm use 2.7.7
           DRIVER=ar bundle exec rspec
 
       - name: Start MongoDB
@@ -59,6 +50,4 @@ jobs:
       - name: Tests Active Mongoid
         id: rspec-mongo
         run: |
-          source /etc/profile.d/rvm.sh
-          rvm use 2.7.7
           DRIVER=mongo bundle exec rspec

@@ -3,6 +3,7 @@ PATH
   specs:
     graphoid (0.1.0)
       graphql (~> 1.8.0)
+      nokogiri (~> 1.13.9)
       rails (~> 6)
 
 GEM
@@ -200,7 +201,7 @@ DEPENDENCIES
   activemodel (>= 5.1)
   byebug
   graphoid!
-  graphql
+  graphql (~> 1.8.18)
   mongoid
   mongoid-rspec
   nokogiri (~> 1.13.9)
@@ -212,7 +213,7 @@ DEPENDENCIES
   sqlite3
 
 RUBY VERSION
-   ruby 2.7.7p221
+   ruby 2.7.8p225
 
 BUNDLED WITH
    2.4.10
