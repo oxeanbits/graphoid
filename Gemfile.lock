@@ -1,8 +1,14 @@
+GIT
+  remote: https://github.com/oxeanbits/graphql-ruby.git
+  revision: 8fdda1aa95c446b05be583123939ddb5478a1288
+  branch: ruby3-1.8.18
+  specs:
+    graphql (1.8.15)
+
 PATH
   remote: .
   specs:
     graphoid (0.1.0)
-      graphql (~> 1.8.0)
       nokogiri (~> 1.13.9)
       rails (~> 6)
 
@@ -79,7 +85,6 @@ GEM
     erubi (1.11.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    graphql (1.8.18)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     loofah (2.19.0)
@@ -201,7 +206,7 @@ DEPENDENCIES
   activemodel (>= 5.1)
   byebug
   graphoid!
-  graphql (~> 1.8.18)
+  graphql!
   mongoid
   mongoid-rspec
   nokogiri (~> 1.13.9)
@@ -213,7 +218,7 @@ DEPENDENCIES
   sqlite3
 
 RUBY VERSION
-   ruby 2.7.8p225
+   ruby 3.0.6p216
 
 BUNDLED WITH
    2.4.10

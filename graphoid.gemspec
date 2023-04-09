@@ -15,9 +15,10 @@ Gem::Specification.new do |gem|
 
   gem.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  gem.required_ruby_version = '~> 2.7'
+  gem.required_ruby_version = '~> 3.0.0'
 
-  gem.add_dependency 'graphql', '~> 1.8.0'
+  # gem.add_dependency 'graphql', '~> 1.8.0'
+  # gem.add_dependency 'graphql', git: 'https://github.com/oxeanbits/graphoid.git', branch: 'ruby3-1.8.18'
   gem.add_dependency 'rails', '~> 6'
   gem.add_dependency 'nokogiri', '~> 1.13.9'
 end
