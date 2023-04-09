@@ -7,7 +7,7 @@ gem 'rails', '~> 6.0'
 
 gem 'mongoid', '~> 7.0'
 gem 'mongoid-rspec'
-gem 'mongoid_includes'
+gem 'mongoid_includes', '~> 3.0.2'
 
 gem "nokogiri", "~> 1.13.9"
 
@@ -15,7 +15,7 @@ group :development do
   gem 'byebug'
 end
 
-gem 'graphiql-rails', group: :development
-gem 'graphql'
+gem 'graphiql-rails', '~> 1.7.0', group: :development
+gem 'graphql', '~> 1.8.18'
 
 gem 'graphoid', path: '../../'
