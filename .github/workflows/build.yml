@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
+  push:
+    branches:
+      - master
+    paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
 
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
