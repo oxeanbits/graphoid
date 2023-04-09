@@ -11,6 +11,9 @@ env:
 jobs:
   graphoid-build:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        mongodb-version: ['4.2']
 
     steps:
       - name: Clone
@@ -44,7 +47,12 @@ jobs:
           rvm use 2.7.7
           DRIVER=ar bundle exec rspec
 
-      - name: Tests Active Record
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: Tests Active Mongoid
         id: rspec-mongo
         run: |
           source /etc/profile.d/rvm.sh
