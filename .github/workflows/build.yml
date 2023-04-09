@@ -9,7 +9,7 @@ env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  ubuntu-latest-make:
+  graphoid-build:
     runs-on: ubuntu-22.04
 
     steps:
@@ -40,11 +40,13 @@ jobs:
       - name: Tests Active Record
         id: rspec-ar
         run: |
+          source /etc/profile.d/rvm.sh
           rvm use 2.7.7
           DRIVER=ar bundle exec rspec
 
       - name: Tests Active Record
         id: rspec-mongo
         run: |
+          source /etc/profile.d/rvm.sh
           rvm use 2.7.7
           DRIVER=mongo bundle exec rspec
