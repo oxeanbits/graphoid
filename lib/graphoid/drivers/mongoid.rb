@@ -42,7 +42,7 @@ module Graphoid
 
       def belongs_to?(type)
         type == mongo_constants[:belongs_to]
-        
+
       end
 
       def has_one?(type)
@@ -67,7 +67,8 @@ module Graphoid
           Mongoid::Boolean => GraphQL::Types::Boolean,
           # Graphoid::Upload => ApolloUploadServer::Upload,
 
-          Boolean => GraphQL::Types::Boolean,
+          TrueClass => GraphQL::Types::Boolean,
+          FalseClass => GraphQL::Types::Boolean,
           Float => GraphQL::Types::Float,
           Integer => GraphQL::Types::Int,
           String => GraphQL::Types::String,

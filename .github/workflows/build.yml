@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened, review_requested, ready_for_review]
+    paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
+
+env:
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  graphoid-build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        mongodb-version: ['4.2']
+
+    steps:
+      - name: Clone
+        id: checkout
+        uses: actions/checkout@v1
+
+      - name: Dependencies
+        id: depends
+        run: |
+          sudo apt-get update
+          sudo apt-get remove ruby
+          sudo apt-get install build-essential software-properties-common
+          sudo apt-add-repository -y ppa:rael-gc/rvm
+          sudo apt-get install rvm
+          sudo usermod -a -G rvm $USER
+          source /etc/profile.d/rvm.sh
+          rvm install ruby-2.7.7
+
+      - name: Gems
+        id: gems
+        run: |
+          source /etc/profile.d/rvm.sh
+          rvm use 2.7.7
+          gem install bundler:1.17.3
+          bundle install -j 5
+
+      - name: Tests Active Record
+        id: rspec-ar
+        run: |
+          source /etc/profile.d/rvm.sh
+          rvm use 2.7.7
+          DRIVER=ar bundle exec rspec
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: Tests Active Mongoid
+        id: rspec-mongo
+        run: |
+          source /etc/profile.d/rvm.sh
+          rvm use 2.7.7
+          DRIVER=mongo bundle exec rspec
