@@ -1,14 +1,14 @@
 GIT
   remote: https://github.com/oxeanbits/graphql-ruby.git
-  revision: 8fdda1aa95c446b05be583123939ddb5478a1288
+  revision: 6619f2fe4e1c0e542149a2a49769b2cfbb1b971b
   branch: ruby3-1.8.18
   specs:
-    graphql (1.8.15)
+    graphql (1.8.18)
 
 PATH
   remote: .
   specs:
-    graphoid (0.1.0)
+    graphoid (0.2.0)
       nokogiri (~> 1.13.9)
       rails (~> 6)
 
