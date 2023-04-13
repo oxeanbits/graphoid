@@ -56,12 +56,12 @@ module Graphoid
 
         Graphoid::Scalars::Text ||= Class.new(GraphQL::Schema::Scalar) do
           graphql_name 'Text'
-          description 'Should be string? explain this please.'
+          description 'Text scalar'
         end
 
         Graphoid::Scalars::BigInt ||= Class.new(GraphQL::Schema::Scalar) do
           graphql_name 'BigInt'
-          description 'WTF ??'
+          description 'BigInt scalar'
 
           def self.coerce_input(value, _ctx)
             begin
@@ -74,7 +74,7 @@ module Graphoid
 
         Graphoid::Scalars::Decimal ||= Class.new(GraphQL::Schema::Scalar) do
           graphql_name 'Decimal'
-          description 'Define pliiiizzzzzzz'
+          description 'Decimal scalar'
         end
 
         Graphoid::Scalars::Hash ||= Class.new(GraphQL::Schema::Scalar) do
