@@ -1,4 +1,4 @@
-class GraphqlRailsSampleSchema < GraphQL::Schema
+class DigitalizeSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 
