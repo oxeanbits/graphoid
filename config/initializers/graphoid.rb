@@ -1,5 +1,9 @@
 require 'graphoid/graphoid'
 
-Graphoid.configure do |config|
-  config.driver = :mongoid
+Rails.application.config.after_initialize do
+  Graphoid.configure do |config|
+    config.driver = :mongoid
+  end
+
+  Project
 end

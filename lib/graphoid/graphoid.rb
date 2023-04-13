@@ -9,11 +9,7 @@ module Graphoid
     attr_reader :driver
 
     def initialize
-      puts "#" * 90
-      puts "Graphoid.initialize"
-      puts "#" * 90
       Graphoid.driver = configuration&.driver
-      #Rails.application.eager_load!
       Graphoid::Scalars.generate
     end
 

@@ -1,6 +1,9 @@
+require 'graphoid/queries/queries'
+
 class Project < ApplicationRecord
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Graphoid::Queries
 
   field :id, type: String
   field :name, type: String
