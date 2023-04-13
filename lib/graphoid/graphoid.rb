@@ -1,4 +1,5 @@
-# frozen_string_literal: true
+require 'graphoid/driver/mongoid_driver'
+require 'graphoid/scalars'
 
 module Graphoid
   @graphs = {}
@@ -7,9 +8,12 @@ module Graphoid
     attr_reader :driver
 
     def initialize
-      #Graphoid.driver = configuration&.driver
+      puts "#" * 90
+      puts "Graphoid.initialize"
+      puts "#" * 90
+      Graphoid.driver = configuration&.driver
       #Rails.application.eager_load!
-      #Graphoid::Scalars.generate
+      Graphoid::Scalars.generate
     end
 
     def build(model, _action = nil)
@@ -18,6 +22,7 @@ module Graphoid
 
     def driver=(driver)
       #@driver = driver == :active_record ? ActiveRecordDriver : MongoidDriver
+      @driver = MongoidDriver
     end
   end
 
