@@ -88,8 +88,9 @@ module Graphoid
           end
 
           def self.coerce_result(ruby_value, _ctx)
-            binding.pry
             ruby_value.to_h
+          rescue StandardError
+            raise GraphQL::CoercionError, "#{ruby_value.inspect} is not a valid Hash"
           end
         end
 

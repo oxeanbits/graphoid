@@ -8,7 +8,7 @@ class ExampleType < GraphQL::Schema::Object
   field :text, Graphoid::Scalars::Text, null: false, description: "A Text value"
   field :big_int, Graphoid::Scalars::BigInt, null: false, description: "A BigInt value"
   field :decimal, Graphoid::Scalars::Decimal, null: false, description: "A Decimal value"
-  field :hash, Graphoid::Scalars::Hash, null: false, description: "A Hash value"
+  field :hash_field, Graphoid::Scalars::Hash, null: false, description: "A Hash value"
   field :array, Graphoid::Scalars::Array, null: false, description: "An Array value"
 end
 
@@ -40,7 +40,7 @@ module Types
         text: "Some example text",
         big_int: 12345678901234567890,
         decimal: BigDecimal("123.456"),
-        hash: { key: "value" },
+        hash_field: { key: "value" },
         array: [1, 2, 3]
       }
     end
