@@ -1,5 +1,6 @@
 require 'graphoid/operators/attribute'
 require 'graphoid/mapper'
+require 'graphoid/queries/processor'
 
 module Graphoid
   module Types
@@ -87,17 +88,17 @@ module Graphoid
         end
       end
 
-      #def resolve_one(field, model, association)
-      #  field.resolve lambda { |obj, args, _ctx|
-      #    filter = args['where'].to_h
-      #    result = obj.send(association.name)
-      #    processor = Graphoid::Queries::Processor
-      #    if filter.present? && result
-      #      result = processor.execute(model.where(id: result.id), filter).first
-      #    end
-      #    result
-      #  }
-      #end
+      def resolve_one(field, model, association)
+        field.resolve lambda { |obj, args, _ctx|
+          filter = args['where'].to_h
+          result = obj.send(association.name)
+          processor = Graphoid::Queries::Processor
+          if filter.present? && result
+            result = processor.execute(model.where(id: result.id), filter).first
+          end
+          result
+        }
+      end
 
       #def resolve_many(field, _model, association)
       #  field.resolve lambda { |obj, args, _ctx|
