@@ -1,0 +1,6 @@
+development:
+  clients:
+    default:
+      database: digitalize
+      hosts:
+        - localhost:27017
