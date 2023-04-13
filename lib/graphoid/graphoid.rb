@@ -1,5 +1,6 @@
 require 'graphoid/driver/mongoid_driver'
 require 'graphoid/scalars'
+require 'graphoid/grapho'
 
 module Graphoid
   @graphs = {}
@@ -17,7 +18,7 @@ module Graphoid
     end
 
     def build(model, _action = nil)
-      #@graphs[model] ||= Graphoid::Grapho.new(model)
+      @graphs[model] ||= Graphoid::Grapho.new(model)
     end
 
     def driver=(driver)
