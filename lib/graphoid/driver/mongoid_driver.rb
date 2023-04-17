@@ -211,33 +211,33 @@ module Graphoid
       #  parsed
       #end
 
-      #def relate_many(scope, relation, value, operator)
-      #  field_name = relation.inverse_name || scope.name.underscore
-      #  target = Graphoid::Queries::Processor.execute(relation.klass, value).to_a
+      def relate_many(scope, relation, value, operator)
+        field_name = relation.inverse_name || scope.name.underscore
+        target = Graphoid::Queries::Processor.execute(relation.klass, value).to_a
 
-      #  if relation.embeds_many?
-      #    # TODO: not implemented at all.
-      #  end
+        if relation.embeds_many?
+          # TODO: not implemented at all.
+        end
 
-      #  if relation.many_to_many?
-      #    field_name = field_name.to_s.singularize + '_ids'
-      #    ids = target.map(&field_name.to_sym)
-      #    ids.flatten!.uniq!
-      #  else
-      #    field_name = field_name.to_s + '_id'
-      #    ids = target.map(&field_name.to_sym)
-      #  end
+        if relation.many_to_many?
+          field_name = field_name.to_s.singularize + '_ids'
+          ids = target.map(&field_name.to_sym)
+          ids.flatten!.uniq!
+        else
+          field_name = field_name.to_s + '_id'
+          ids = target.map(&field_name.to_sym)
+        end
 
-      #  parsed = {}
-      #  if operator == 'none'
-      #    parsed[:id.nin] = ids
-      #  elsif operator == 'some'
-      #    parsed[:id.in] = ids
-      #  elsif operator == 'every'
-      #    # missing implementation
-      #  end
-      #  parsed
-      #end
+        parsed = {}
+        if operator == 'none'
+          parsed[:id.nin] = ids
+        elsif operator == 'some'
+          parsed[:id.in] = ids
+        elsif operator == 'every'
+          # missing implementation
+        end
+        parsed
+      end
     end
   end
 end
