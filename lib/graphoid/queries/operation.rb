@@ -20,6 +20,7 @@ module Graphoid
     private
 
     def build_operand(model, key)
+      key = key.to_s if key.is_a? Symbol
       fields = Attribute.fields_of(model)
 
       field = fields.find { |f| f.name == key }

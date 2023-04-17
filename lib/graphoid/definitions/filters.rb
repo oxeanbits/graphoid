@@ -8,15 +8,22 @@ module Graphoid
           graphql_name("#{Utils.graphqlize(model.name)}Filter")
           description("Generated model filter for #{model.name}")
 
+          m = self
+          argument(:OR,  -> { [m] }, required: false)
+
           Attribute.fields_of(model).each do |field|
             type = Graphoid::Mapper.convert(field)
             name = Utils.camelize(field.name)
 
             argument name, type, required: false
 
-            m = LIST[model]
-            #argument(:OR,  -> { types[m] })
-            #argument(:AND, -> { types[m] })
+            #m = LIST[model]
+            puts "#" * 90
+            puts model.name
+            puts "#" * 90
+            # argument(:OR,  m, required: false)
+            #argument(:OR,  -> { m }, required: false)
+            #argument(:AND, -> { [m] }, required: false)
 
             operators = %w[lt lte gt gte contains not]
             operators.push('regex') if Graphoid.configuration.driver == :mongoid

@@ -152,12 +152,12 @@ module Graphoid
         scope.and(parsed)
       end
 
-      #def execute_or(scope, list)
-      #  list.map! do |object|
-      #    Graphoid::Queries::Processor.execute(scope, object).selector
-      #  end
-      #  scope.any_of(list)
-      #end
+      def execute_or(scope, list)
+        list.map! do |object|
+          Graphoid::Queries::Processor.execute(scope, object).selector
+        end
+        scope.any_of(list)
+      end
 
       def parse(attribute, value, operator, prefix = nil)
         field = attribute.name
