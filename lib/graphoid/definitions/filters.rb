@@ -10,6 +10,7 @@ module Graphoid
 
           m = self
           argument(:OR,  -> { [m] }, required: false)
+          argument(:AND, -> { [m] }, required: false)
 
           Attribute.fields_of(model).each do |field|
             type = Graphoid::Mapper.convert(field)
@@ -17,13 +18,9 @@ module Graphoid
 
             argument name, type, required: false
 
-            #m = LIST[model]
-            puts "#" * 90
-            puts model.name
-            puts "#" * 90
+            # m = LIST[model]
             # argument(:OR,  m, required: false)
-            #argument(:OR,  -> { m }, required: false)
-            #argument(:AND, -> { [m] }, required: false)
+            # argument(:OR,  -> { m }, required: false)
 
             operators = %w[lt lte gt gte contains not]
             operators.push('regex') if Graphoid.configuration.driver == :mongoid
@@ -32,9 +29,9 @@ module Graphoid
               argument "#{name}_#{suffix}", type, required: false
             end
 
-            #%w[in nin].each do |suffix|
-            #  argument "#{name}_#{suffix}", types[type], required: false
-            #end
+            %w[in nin].each do |suffix|
+              argument "#{name}_#{suffix}", [type], required: false
+            end
           end
 
           #Relation.relations_of(model).each do |name, relation|
