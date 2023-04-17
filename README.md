@@ -1,9 +1,13 @@
-# README
+# Digitalize Upgrade to rails 7 and Upgrade of Graphql Ruby
 
 ```
 sudo apt-get install libssl1.1
 rvm install ruby-3.2.2 --with-yjit --with-openssl-dir=/opt/openssl-1.1.1q/
 ```
+
+## Testing
+
+http://127.0.0.1:3000/graphiql
 
 # roadmap
 
@@ -59,3 +63,7 @@ mutation m{
   }
 }
 
+
+## References
+
+https://graphql-ruby.org/queries/ast_analysis.html

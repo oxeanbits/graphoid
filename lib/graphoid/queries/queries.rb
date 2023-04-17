@@ -42,6 +42,7 @@ module Graphoid
             # maybe use context.ast_node instead
             # but the problem is that it is not the same
             # model = Graphoid.driver.eager_load(context.irep_node, model)
+            # https://graphql-ruby.org/fields/introduction.html#extra-field-metadata
             result = Processor.execute(model, where.to_h)
             order = Processor.parse_order(model, order.to_h)
             result = result.order(order).limit(limit)
