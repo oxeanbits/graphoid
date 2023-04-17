@@ -18,8 +18,10 @@ http://127.0.0.1:3000/graphiql
 - [x] create mutation createProject { }
 - [x] update mutation updateProject { }
 - [x] delete mutation deleteProject { }
+- [x] query with nested fields single on result projects { example { text } }
+- [x] query with nested fields on result projects { examples { text } }
 - [ ] query with nested fields on where projects(where: { example: { text: "test" } }) { }
-- [ ] query with nested fields on result projects { example { text } }
+- [ ] query with nested fields on result and where projects { examples(where: ...) { text } }
 - [ ] enable graphields
 - [ ] enable graphorbid
 - [ ] tests
