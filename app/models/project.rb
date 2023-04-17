@@ -1,4 +1,5 @@
 require 'graphoid/queries/queries'
+require 'graphoid/mutations/structure'
 
 class Project < ApplicationRecord
   include Mongoid::Document
@@ -9,6 +10,7 @@ class Project < ApplicationRecord
   field :active, type: Boolean, default: true
 
   include Graphoid::Queries
+  include Graphoid::Mutations
 
   validates :name, presence: true
   validates :id, presence: true
