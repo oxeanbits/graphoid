@@ -1,3 +1,5 @@
+require 'graphoid/argument'
+
 module Graphoid
   module Queries
     extend ActiveSupport::Concern
@@ -15,7 +17,7 @@ module Graphoid
 
 
       query_type.field name: grapho.plural, type: [grapho.type], null: true do
-        #Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
+        Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
       end
 
       #query_type.field name: "x_meta_#{grapho.plural}", type: Graphoid::Types::Meta, null: true do

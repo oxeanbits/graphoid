@@ -31,6 +31,7 @@ module Graphoid
       def underscore(props, fields = [])
         attrs = {}
         props.each do |key, value|
+          key = key.to_s if key.is_a? Symbol
           key = key.underscore if fields.exclude?(key)
           attrs[key] = value
         end

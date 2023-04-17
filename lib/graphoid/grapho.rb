@@ -1,6 +1,7 @@
 require 'graphoid/utils'
 require 'graphoid/definitions/types'
 require 'graphoid/definitions/filters'
+require 'graphoid/definitions/sorter'
 
 module Graphoid
   class Grapho
@@ -11,7 +12,7 @@ module Graphoid
       build_naming(model)
 
       @type   = Graphoid::Types.generate(model)
-      #@order  = Graphoid::Sorter.generate(model)
+      @order  = Graphoid::Sorter.generate(model)
       #@input  = Graphoid::Inputs.generate(model)
       @filter = Graphoid::Filters.generate(model)
     end
