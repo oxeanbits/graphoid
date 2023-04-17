@@ -18,9 +18,9 @@ module Graphoid
           argument(:data, grapho.input, required: false)
         end
 
-        type.field(name: plural_name, type: [grapho.type], null: true) do
-          argument(:data, [grapho.input], required: false)
-        end
+        #type.field(name: plural_name, type: [grapho.type], null: true) do
+        #  argument(:data, [grapho.input], required: false)
+        #end
 
         type.class_eval do
           define_method :"#{name}" do |data: {}|
