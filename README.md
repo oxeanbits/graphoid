@@ -16,8 +16,8 @@ http://127.0.0.1:3000/graphiql
 - [x] where query projects(where: { }) { }
 - [x] order query projects(order: { }) { }
 - [x] create mutation createProject { }
-- [ ] update mutation updateProject { }
-- [ ] delete mutation deleteProject { }
+- [x] update mutation updateProject { }
+- [x] delete mutation deleteProject { }
 - [ ] query with nested fields on where projects(where: { example: { text: "test" } }) { }
 - [ ] query with nested fields on result projects { example { text } }
 - [ ] tests

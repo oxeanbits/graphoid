@@ -6,4 +6,5 @@ Rails.application.config.after_initialize do
   end
 
   Project
+  User
 end
