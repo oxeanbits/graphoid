@@ -70,15 +70,15 @@ module Graphoid
             if Relation.new(relation).many?
               plural_name = name.pluralize
 
-              field plural_name, types[relation_type] do
-                Graphoid::Argument.query_many(self, filter, order)
+              field plural_name, [relation_type] do
+                Graphoid::Argument.query_many(self, filter, order, required: false)
                 Graphoid::Types.resolve_many(self, relation_class, relation)
               end
 
-              field "x_meta_#{plural_name}", Graphoid::Types::Meta do
-                Graphoid::Argument.query_many(self, filter, order)
-                Graphoid::Types.resolve_many(self, relation_class, relation)
-              end
+              #field "x_meta_#{plural_name}", Graphoid::Types::Meta do
+              #  Graphoid::Argument.query_many(self, filter, order, required: false)
+              #  Graphoid::Types.resolve_many(self, relation_class, relation)
+              #end
             else
               field name, relation_type do
                 argument :where, filter, required: false
@@ -102,27 +102,27 @@ module Graphoid
       #end
 
       def resolve_many(field, _model, association)
-        field.resolve lambda { |obj, args, _ctx|
-          filter = args['where'].to_h
-          order = args['order'].to_h
-          limit = args['limit']
-          skip = args['skip']
+        #field.resolve lambda { |obj, args, _ctx|
+        #  filter = args['where'].to_h
+        #  order = args['order'].to_h
+        #  limit = args['limit']
+        #  skip = args['skip']
 
-          processor = Graphoid::Queries::Processor
+        #  processor = Graphoid::Queries::Processor
 
-          result = obj.send(association.name)
-          result = processor.execute(result, filter) if filter.present?
+        #  result = obj.send(association.name)
+        #  result = processor.execute(result, filter) if filter.present?
 
-          if order.present?
-            order = processor.parse_order(obj.send(association.name), order)
-            result = result.order(order)
-          end
+        #  if order.present?
+        #    order = processor.parse_order(obj.send(association.name), order)
+        #    result = result.order(order)
+        #  end
 
-          result = result.limit(limit) if limit.present?
-          result = result.skip(skip) if skip.present?
+        #  result = result.limit(limit) if limit.present?
+        #  result = result.skip(skip) if skip.present?
 
-          result
-        }
+        #  result
+        #}
       end
     end
   end

@@ -5,6 +5,8 @@ class Project < ApplicationRecord
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  has_many :users
+
   #field :id, type: String # crashing due to duplicated field
   field :name, type: String
   field :active, type: Boolean, default: true
