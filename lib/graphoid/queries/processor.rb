@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+require 'graphoid/queries/operation'
 
 module Graphoid
   module Queries

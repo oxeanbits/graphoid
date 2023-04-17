@@ -148,9 +148,9 @@ module Graphoid
       #  model
       #end
 
-      #def execute_and(scope, parsed)
-      #  scope.and(parsed)
-      #end
+      def execute_and(scope, parsed)
+        scope.and(parsed)
+      end
 
       #def execute_or(scope, list)
       #  list.map! do |object|
@@ -159,28 +159,28 @@ module Graphoid
       #  scope.any_of(list)
       #end
 
-      #def parse(attribute, value, operator, prefix = nil)
-      #  field = attribute.name
-      #  field = "#{prefix}.#{field}" if prefix
-      #  parsed = {}
-      #  case operator
-      #  when 'gt', 'gte', 'lt', 'lte', 'in', 'nin'
-      #    parsed[field.to_sym.send(operator)] = value
-      #  when 'regex'
-      #    parsed[field.to_sym] = Regexp.new(value.to_s, Regexp::IGNORECASE)
-      #  when 'contains'
-      #    parsed[field.to_sym] = Regexp.new(Regexp.quote(value.to_s), Regexp::IGNORECASE)
-      #  when 'not'
-      #    if value.present? && !value.is_a?(Numeric)
-      #      parsed[field.to_sym.send(operator)] = Regexp.new(Regexp.quote(value.to_s), Regexp::IGNORECASE)
-      #    else
-      #      parsed[field.to_sym.send(:nin)] = [value]
-      #    end
-      #  else
-      #    parsed[field.to_sym] = value
-      #  end
-      #  parsed
-      #end
+      def parse(attribute, value, operator, prefix = nil)
+        field = attribute.name
+        field = "#{prefix}.#{field}" if prefix
+        parsed = {}
+        case operator
+        when 'gt', 'gte', 'lt', 'lte', 'in', 'nin'
+          parsed[field.to_sym.send(operator)] = value
+        when 'regex'
+          parsed[field.to_sym] = Regexp.new(value.to_s, Regexp::IGNORECASE)
+        when 'contains'
+          parsed[field.to_sym] = Regexp.new(Regexp.quote(value.to_s), Regexp::IGNORECASE)
+        when 'not'
+          if value.present? && !value.is_a?(Numeric)
+            parsed[field.to_sym.send(operator)] = Regexp.new(Regexp.quote(value.to_s), Regexp::IGNORECASE)
+          else
+            parsed[field.to_sym.send(:nin)] = [value]
+          end
+        else
+          parsed[field.to_sym] = value
+        end
+        parsed
+      end
 
       #def relate_embedded(scope, relation, filters)
       #  # TODO: this way of fetching this is not recursive as the regular fields
