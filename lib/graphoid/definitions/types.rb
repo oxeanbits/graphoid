@@ -4,6 +4,43 @@ require 'graphoid/mapper'
 require 'graphoid/queries/processor'
 
 module Graphoid
+  module Resolvers
+    def self.resolver_class(relation_class, relation_type, association)
+      association_name = association.name || "casa"
+      Class.new(GraphQL::Schema::Resolver) do
+        type [relation_type], null: true
+
+        filter = Graphoid::Filters::LIST[relation_class]
+        order  = Graphoid::Sorter::LIST[relation_class]
+        puts "resolver_class: #{relation_class}, #{relation_type}, #{association}"
+        @@association_name = association_name
+
+        argument :where, filter, required: false
+        argument :order, order, required: false
+        argument :limit, GraphQL::Types::Int, required: false
+        argument :skip,  GraphQL::Types::Int, required: false
+
+        def resolve(where: nil, order: nil, limit: nil, skip: nil)
+          obj = self.object
+          processor = Graphoid::Queries::Processor
+
+          result = obj.send(@@association_name)
+          result = processor.execute(result, where) if where.present?
+
+          if order.present?
+            order = processor.parse_order(obj.send(@@association_name), order)
+            result = result.order(order)
+          end
+
+          result = result.limit(limit) if limit.present?
+          result = result.skip(skip) if skip.present?
+
+          result
+        end
+      end
+    end
+  end
+
   module Types
     LIST = {}
     ENUMS = {}
@@ -70,10 +107,8 @@ module Graphoid
             if Relation.new(relation).many?
               plural_name = name.pluralize
 
-              field plural_name, [relation_type] do
-                Graphoid::Argument.query_many(self, filter, order, required: false)
-                Graphoid::Types.resolve_many(self, relation_class, relation)
-              end
+              resolver = Graphoid::Resolvers.resolver_class(relation_class, relation_type, relation)
+              field plural_name, resolver: resolver
 
               #field "x_meta_#{plural_name}", Graphoid::Types::Meta do
               #  Graphoid::Argument.query_many(self, filter, order, required: false)
