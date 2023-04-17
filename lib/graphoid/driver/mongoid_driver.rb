@@ -113,6 +113,7 @@ module Graphoid
         relation.relation
       end
 
+      # irep_node is deprecated
       #def eager_load(selection, model, first = true)
       #  referenced_relations = [
       #    mongo_constants[:many_to_many],

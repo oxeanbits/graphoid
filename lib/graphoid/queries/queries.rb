@@ -14,9 +14,9 @@ module Graphoid
       end
 
 
-      #query_type.field name: grapho.plural, type: [grapho.type], null: true do
-      #  Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
-      #end
+      query_type.field name: grapho.plural, type: [grapho.type], null: true do
+        #Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
+      end
 
       #query_type.field name: "x_meta_#{grapho.plural}", type: Graphoid::Types::Meta, null: true do
       #  Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
@@ -33,21 +33,24 @@ module Graphoid
         end
       end
 
-      #query_type.class_eval do
-      #  define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
-      #    begin
-      #      model = Graphoid.driver.eager_load(context.irep_node, model)
-      #      result = Processor.execute(model, where.to_h)
-      #      order = Processor.parse_order(model, order.to_h)
-      #      result = result.order(order).limit(limit)
-      #      Graphoid.driver.skip(result, skip)
-      #    rescue Exception => ex
-      #      GraphQL::ExecutionError.new(ex.message)
-      #    end
-      #  end
+      query_type.class_eval do
+        define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
+          begin
+            # irep_node is deprecated
+            # maybe use context.ast_node instead
+            # but the problem is that it is not the same
+            # model = Graphoid.driver.eager_load(context.irep_node, model)
+            result = Processor.execute(model, where.to_h)
+            order = Processor.parse_order(model, order.to_h)
+            result = result.order(order).limit(limit)
+            Graphoid.driver.skip(result, skip)
+          rescue Exception => ex
+            GraphQL::ExecutionError.new(ex.message)
+          end
+        end
 
-      #  alias_method :"x_meta_#{grapho.plural}", :"#{grapho.plural}"
-      #end
+        alias_method :"x_meta_#{grapho.plural}", :"#{grapho.plural}"
+      end
     end
   end
 end
