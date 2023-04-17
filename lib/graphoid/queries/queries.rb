@@ -22,16 +22,16 @@ module Graphoid
       #  Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
       #end
 
-      #query_type.class_eval do
-      #  define_method :"#{grapho.name}" do |id: nil, where: nil|
-      #    begin
-      #      return model.find(id) if id
-      #      Processor.execute(model, where.to_h).first
-      #    rescue Exception => ex
-      #      GraphQL::ExecutionError.new(ex.message)
-      #    end
-      #  end
-      #end
+      query_type.class_eval do
+        define_method :"#{grapho.name}" do |id: nil, where: nil|
+          begin
+            return model.find(id) if id
+            Processor.execute(model, where.to_h).first
+          rescue Exception => ex
+            GraphQL::ExecutionError.new(ex.message)
+          end
+        end
+      end
 
       #query_type.class_eval do
       #  define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
