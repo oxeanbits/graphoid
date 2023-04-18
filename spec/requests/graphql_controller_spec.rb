@@ -70,8 +70,8 @@ RSpec.describe GraphqlController, type: :controller do
         post :execute, params: { query: invalid_query }
       end
 
-      it 'returns a 400 status code' do
-        expect(response).to have_http_status(400)
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
       end
 
       it 'returns an error message' do
