@@ -25,7 +25,7 @@ require 'graphoid/mutations/delete'
 require 'graphoid/mutations/processor'
 require 'graphoid/mutations/structure'
 
-require 'graphoid/driver/mongoid_driver'
+require 'graphoid/drivers/mongoid_driver'
 
 require 'graphoid/definitions/types'
 require 'graphoid/definitions/sorter'
