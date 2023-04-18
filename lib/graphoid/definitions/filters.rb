@@ -1,3 +1,5 @@
+require 'graphoid/operators/relation'
+
 module Graphoid
   module Filters
     LIST = {}
@@ -38,23 +40,25 @@ module Graphoid
               end
             end
 
-            #Relation.relations_of(model).each do |name, relation|
-            #  relation_class = relation.class_name.safe_constantize
-            #  next unless relation_class
+            Relation.relations_of(model).each do |name, relation|
+              relation_class = relation.class_name.safe_constantize
+              relation_name = Utils.graphqlize(relation_class.name)
 
-            #  relation_filter = LIST[relation_class]
-            #  next unless relation_filter
+              next unless relation_class
 
-            #  relation_name = Utils.camelize(name)
+              relation_filter = LIST[relation_class]
+              relation_filter = "Graphoid::Types::#{relation_name}Filter" unless relation_filter
 
-            #  if Relation.new(relation).many?
-            #    %w[some none every].each do |suffix|
-            #      argument "#{relation_name}_#{suffix}", relation_filter, required: false
-            #    end
-            #  else
-            #    argument relation_name.to_s, relation_filter, required: false
-            #  end
-            #end
+              relation_name = Utils.camelize(name)
+
+              if Relation.new(relation).many?
+                %w[some none every].each do |suffix|
+                  argument "#{relation_name}_#{suffix}", relation_filter, required: false
+                end
+              else
+                argument relation_name.to_s, relation_filter, required: false
+              end
+            end
           end
         end
         LIST[model]

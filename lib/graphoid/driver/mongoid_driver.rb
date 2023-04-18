@@ -1,3 +1,10 @@
+require 'graphoid/operators/inherited/many_to_many'
+require 'graphoid/operators/inherited/has_many'
+require 'graphoid/operators/inherited/has_one'
+require 'graphoid/operators/inherited/belongs_to'
+require 'graphoid/operators/inherited/embeds_one'
+require 'graphoid/operators/inherited/embeds_many'
+
 module Graphoid
   # module that helps executing mongoid specific code
   module MongoidDriver
