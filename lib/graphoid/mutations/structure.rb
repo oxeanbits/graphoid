@@ -1,7 +1,3 @@
-require 'graphoid/mutations/create'
-require 'graphoid/mutations/update'
-require 'graphoid/mutations/delete'
-
 module Graphoid
   module Mutations
     def self.generate(*models)

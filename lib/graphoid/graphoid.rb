@@ -1,44 +1,33 @@
-require 'graphoid/driver/mongoid_driver'
-require 'graphoid/scalars'
+require 'graphoid/utils'
 require 'graphoid/grapho'
+require 'graphoid/mapper'
+require 'graphoid/config'
+require 'graphoid/scalars'
+require 'graphoid/argument'
 require 'graphoid/graphield'
 
-module Graphoid
-  @graphs = {}
+require 'graphoid/operators/attribute'
+require 'graphoid/operators/relation'
+require 'graphoid/operators/inherited/belongs_to'
+require 'graphoid/operators/inherited/embeds_one'
+require 'graphoid/operators/inherited/embeds_many'
+require 'graphoid/operators/inherited/has_many'
+require 'graphoid/operators/inherited/has_one'
+require 'graphoid/operators/inherited/many_to_many'
 
-  class << self
-    attr_reader :driver
+require 'graphoid/queries/queries'
+require 'graphoid/queries/processor'
+require 'graphoid/queries/operation'
 
-    def initialize
-      Graphoid.driver = configuration&.driver
-      Graphoid::Scalars.generate
-    end
+require 'graphoid/mutations/create'
+require 'graphoid/mutations/update'
+require 'graphoid/mutations/delete'
+require 'graphoid/mutations/processor'
+require 'graphoid/mutations/structure'
 
-    def build(model, _action = nil)
-      @graphs[model] ||= Graphoid::Grapho.new(model)
-    end
+require 'graphoid/driver/mongoid_driver'
 
-    def driver=(driver)
-      #@driver = driver == :active_record ? ActiveRecordDriver : MongoidDriver
-      @driver = MongoidDriver
-    end
-  end
-
-  class << self
-    attr_accessor :configuration
-
-    def configure
-      self.configuration ||= Configuration.new
-      yield(configuration)
-      Graphoid.initialize
-    end
-  end
-
-  class Configuration
-    attr_accessor :driver
-
-    def initialize
-      @driver = :mongoid
-    end
-  end
-end
+require 'graphoid/definitions/types'
+require 'graphoid/definitions/sorter'
+require 'graphoid/definitions/filters'
+require 'graphoid/definitions/inputs'

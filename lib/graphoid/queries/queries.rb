@@ -1,5 +1,3 @@
-require 'graphoid/argument'
-
 module Graphoid
   module Queries
     def self.generate(*models)

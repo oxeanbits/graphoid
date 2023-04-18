@@ -1,5 +1,3 @@
-require 'graphoid/mutations/processor'
-
 module Graphoid
   module Mutations
     module Create
