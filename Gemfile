@@ -46,6 +46,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "graphiql-rails"
   gem "pry-byebug"
+  gem "rspec-rails"
 end
 
 group :development do
