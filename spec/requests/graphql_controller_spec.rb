@@ -9,7 +9,7 @@ RSpec.describe GraphqlController, type: :controller do
     let(:query) do
       <<-GRAPHQL
         {
-          projects(order:{ name: ASC}, where: { active: true}) {
+          projects(order:{ name: ASC }, where: { active: true }) {
             id
             name
             active
@@ -20,7 +20,7 @@ RSpec.describe GraphqlController, type: :controller do
     end
 
     let!(:project1) { Project.create!(name: 'Project A', active: true) }
-    #let!(:project2) { Project.create(name: 'Project B', active: false, users: [user3]) }
+    let!(:project2) { Project.create(name: 'Project B', active: false, users: [user3]) }
     let!(:project3) { Project.create!(name: 'Project C', active: true) }
 
     let!(:user1) { User.create!(name: 'charlie', email: 'charlie@gmail.com',
