@@ -14,12 +14,13 @@ module Graphoid
 
         filter = Graphoid::Filters::LIST[relation_class]
         filter = "Graphoid::Types::#{relation_name}Filter" unless filter
-        #order  = Graphoid::Sorter::LIST[relation_class]
-        #puts "resolver_class: #{relation_class}, #{relation_type}, #{association}"
+        order  = Graphoid::Sorter::LIST[relation_class]
+        order = "Graphoid::Types::#{relation_name}Sorter" unless order
+        puts "resolver_class: #{relation_class}, #{relation_type}, #{association}"
         @@association_name = association_name
 
         argument :where, filter, required: false
-        #argument :order, order, required: false
+        argument :order, order, required: false
         argument :limit, GraphQL::Types::Int, required: false
         argument :skip,  GraphQL::Types::Int, required: false
 
@@ -94,6 +95,7 @@ module Graphoid
 
               relation_type = LIST[relation_class]
               unless relation_type
+                # using string type to avoid circular dependency
                 relation_type = "Graphoid::Types::#{relation_name}Type"
                 #warn "Graphoid: warning: #{message} because it was not found as a model" if ENV['DEBUG']
                 #next
