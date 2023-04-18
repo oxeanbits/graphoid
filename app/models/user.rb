@@ -27,10 +27,9 @@ class User < ApplicationRecord
   graphield :password, type: String
   graphield :password_confirmation, type: String
 
-  ## this is an API hidden field. Not accessible in graphql
-  #graphorbid :token, type: String
-  #graphorbid :password_digest, type: String
-  field :password_digest, type: String
+  # this is an API hidden field. Not accessible in graphql
+  graphorbid :token, type: String
+  graphorbid :password_digest, type: String
 
   #include Graphoid::Queries
   #include Graphoid::Mutations
@@ -43,4 +42,12 @@ class User < ApplicationRecord
   validates :password_digest, presence: true
   validates :active, presence: true
   validates :project_ids, presence: true
+
+  def password_digest
+    self[:password_digest]
+  end
+
+  def password_digest=(digest)
+    self[:password_digest] = digest
+  end
 end
