@@ -143,6 +143,55 @@ RSpec.describe GraphqlController, type: :controller do
     end
   end
 
+  describe 'POST #execute users using OR filters' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          users(where: { OR: [
+            {project: { nameContains: "BK" }}, {project: { nameContains: "Ox" }}
+          ]}) {
+            name
+          }
+        }
+      GRAPHQL
+    end
+
+    let!(:project1) { Project.create!(name: 'Project BK-A', active: true) }
+    let!(:project2) { Project.create(name: 'Project Ox-B', active: true) }
+    let!(:project3) { Project.create!(name: 'Project C', active: true) }
+
+    let!(:user1) { User.create!(name: 'alice', email: 'alice@gmail.com',
+                                project_id: project1.id, project_ids: [project1.id.to_s],
+                                password: '12345678', password_confirmation: '12345678') }
+    let!(:user2) { User.create!(name: 'charlie', email: 'charlie@gmail.com',
+                                project_id: project2.id, project_ids: [project2.id.to_s],
+                                password: '12345678', password_confirmation: '12345678') }
+    let!(:user3) { User.create!(name: 'bob', email: 'bob@gmail.com',
+                                project_id: project3.id, project_ids: [project3.id.to_s],
+                                password: '12345678', password_confirmation: '12345678') }
+
+    context 'with valid query' do
+      before do
+        post :execute, params: { query: query }
+      end
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the expected users' do
+        expect(JSON.parse(response.body)['data']['users']).to match_array([
+          {
+            'name' => user1.name,
+          },
+          {
+            'name' => user2.name,
+          }
+        ])
+      end
+    end
+  end
+
   describe 'POST #execute create user' do
     let!(:project) { Project.create!(name: 'Project A', active: true) }
 
