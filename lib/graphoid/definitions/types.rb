@@ -6,7 +6,7 @@ require 'graphoid/queries/processor'
 module Graphoid
   module Resolvers
     def self.resolver_class(relation_class, relation_type, association)
-      association_name = association.name || "casa"
+      association_name = association.name
       relation_name = Utils.graphqlize(relation_class.name)
 
       Class.new(GraphQL::Schema::Resolver) do
