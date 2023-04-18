@@ -26,7 +26,7 @@ http://127.0.0.1:3000/graphiql
 - [ ] Improve initialization and module enabling on models
 - [x] enable graphields
 - [x] enable graphorbid
-- [ ] tests
+- [x] tests
 
 
 # Working without crashes but no native eager load
