@@ -73,3 +73,8 @@ mutation m{
 ## References
 
 https://graphql-ruby.org/queries/ast_analysis.html
+https://graphql-ruby.org/errors/error_handling
+https://github.com/rmosolgo/graphql-ruby/issues?q=is%3Aissue+circular+loading
+https://github.com/rmosolgo/graphql-ruby/issues/2716#issuecomment-582503380
+
+https://guides.rubyonrails.org/active_model_basics.html#securepassword
