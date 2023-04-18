@@ -24,7 +24,7 @@ http://127.0.0.1:3000/graphiql
 - [x] query with nested fields on where projects(where: { example: { text: "test" } }) { }
 - [x] query with nested fields on result and where projects { examples(where: ...) { text } }
 - [ ] Improve initialization and module enabling on models
-- [ ] enable graphields
+- [x] enable graphields
 - [ ] enable graphorbid
 - [ ] tests
 

@@ -2,9 +2,10 @@ module Graphoid
   class Operation
     attr_reader :scope, :operand, :operator, :value
 
-    def initialize(scope, key, value)
+    def initialize(scope, key, value, camelize: false)
       # camelize it because graphql 2.0 is passing keys as symbols using underscore format
-      key = key.to_s.camelcase(:lower)
+      # but for queries we need the underscore format to identify operators such as contains, regex
+      key = key.to_s.camelcase(:lower) if camelize
       @scope = scope
       @operator = nil
       @operand = key
