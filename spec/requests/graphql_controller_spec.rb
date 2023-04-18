@@ -142,4 +142,84 @@ RSpec.describe GraphqlController, type: :controller do
       end
     end
   end
+
+  describe 'POST #execute create user' do
+    let!(:project) { Project.create!(name: 'Project A', active: true) }
+
+    let(:mutation) do
+      <<-GRAPHQL
+        mutation {
+          createUser(data: {
+            name: "Zeca"
+            email: "zecay@gmail.com"
+            password: "123456"
+            passwordConfirmation: "123456"
+            projectId: "#{project.id}"
+            projectIds: ["#{project.id}"]
+          }) {
+            id
+            name
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'with valid mutation' do
+      before do
+        post :execute, params: { query: mutation }
+      end
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'creates a new user' do
+        expect(User.count).to eq(1)
+      end
+
+      it 'returns the created user' do
+        created_user = User.last
+        expect(JSON.parse(response.body)['data']['createUser']).to match(
+          'id' => created_user.id.to_s,
+          'name' => created_user.name
+        )
+      end
+    end
+
+    context 'with invalid mutation' do
+      let(:invalid_mutation) do
+        <<-GRAPHQL
+          mutation {
+            createUser(data: {
+              name: "Zeca"
+              email: "zecay@gmail.com"
+              password: "123456"
+              passwordConfirmation: "654321"
+              projectId: "#{project.id}"
+              projectIds: ["#{project.id}"]
+            }) {
+              id
+              name
+            }
+          }
+        GRAPHQL
+      end
+
+      before do
+        post :execute, params: { query: invalid_mutation }
+      end
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'does not create a new user' do
+        expect(User.count).to eq(0)
+      end
+
+      it 'returns an error message' do
+        expect(JSON.parse(response.body)['errors']).not_to be_empty
+      end
+    end
+  end
 end
