@@ -8,6 +8,10 @@ module Graphoid
     #include Graphoid::Mutations::Update
     #include Graphoid::Mutations::Delete
 
+    def self.generate(*models)
+      models.each { |model| Graphoid::Mutations.build(model) }
+    end
+
     def self.build(model)
       Graphoid::Mutations::Create.build(model)
       Graphoid::Mutations::Update.build(model)

@@ -16,7 +16,6 @@ module Graphoid
         filter = "Graphoid::Types::#{relation_name}Filter" unless filter
         order  = Graphoid::Sorter::LIST[relation_class]
         order = "Graphoid::Types::#{relation_name}Sorter" unless order
-        puts "resolver_class: #{relation_class}, #{relation_type}, #{association}"
         @@association_name = association_name
 
         argument :where, filter, required: false
@@ -50,6 +49,17 @@ module Graphoid
     ENUMS = {}
 
     class << self
+      def initialize(*models)
+        models.each do |model|
+          type_const = "#{model.name}Type"
+          filter_const = "#{model.name}Filter"
+          sorter_const = "#{model.name}Sorter"
+          Graphoid::Types::const_set(type_const, Class.new(GraphQL::Schema::Object))
+          Graphoid::Types::const_set(filter_const, Class.new(GraphQL::Schema::InputObject))
+          Graphoid::Types::const_set(sorter_const, Class.new(GraphQL::Schema::InputObject))
+        end
+      end
+
       def generate(model)
         Graphoid::Types::Meta ||= Class.new(GraphQL::Schema::Object) do
           graphql_name('xMeta')

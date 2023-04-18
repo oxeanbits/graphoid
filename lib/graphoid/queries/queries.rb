@@ -2,6 +2,10 @@ require 'graphoid/argument'
 
 module Graphoid
   module Queries
+    def self.generate(*models)
+      models.each { |model| Graphoid::Queries.build(model) }
+    end
+
     def self.build(model)
       Graphoid.initialize
       #model = self
