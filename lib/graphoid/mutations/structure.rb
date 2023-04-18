@@ -4,10 +4,6 @@ require 'graphoid/mutations/delete'
 
 module Graphoid
   module Mutations
-    #include Graphoid::Mutations::Create
-    #include Graphoid::Mutations::Update
-    #include Graphoid::Mutations::Delete
-
     def self.generate(*models)
       models.each { |model| Graphoid::Mutations.build(model) }
     end

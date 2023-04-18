@@ -8,7 +8,6 @@ module Graphoid
 
     def self.build(model)
       Graphoid.initialize
-      #model = self
       grapho = Graphoid.build(model)
       query_type = ::Types::QueryType
 
@@ -17,16 +16,17 @@ module Graphoid
         argument :where, grapho.filter, required: false
       end
 
-
       query_type.field name: grapho.plural, type: [grapho.type], null: true do
         Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
       end
 
-      #query_type.field name: "x_meta_#{grapho.plural}", type: Graphoid::Types::Meta, null: true do
-      #  Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
-      #end
-
       query_type.class_eval do
+        # Dynamically defining a resolver method for queries:
+        # query {
+        # project(id: "5e7b5b9b0b0b0b0b0b0b0b0b", where: { name_regex: "[a-z]" }) {
+        #  id
+        #  name
+        # }
         define_method :"#{grapho.name}" do |id: nil, where: nil|
           begin
             return model.find(id) if id
@@ -38,6 +38,12 @@ module Graphoid
       end
 
       query_type.class_eval do
+        # Dynamically defining a resolver method for queries:
+        # query {
+        #  projects(where: { name_contains: "a" }, order: { name: ASC }, limit: 10, skip: 10) {
+        #    id
+        #    name
+        # }
         define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
           begin
             # irep_node is deprecated
@@ -53,8 +59,6 @@ module Graphoid
             GraphQL::ExecutionError.new(ex.message)
           end
         end
-
-        alias_method :"x_meta_#{grapho.plural}", :"#{grapho.plural}"
       end
     end
   end

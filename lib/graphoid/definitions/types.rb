@@ -61,14 +61,6 @@ module Graphoid
       end
 
       def generate(model)
-        Graphoid::Types::Meta ||= Class.new(GraphQL::Schema::Object) do
-          graphql_name('xMeta')
-          description('xMeta Type')
-          #field('count', types.Int)
-          field('count', GraphQL::Types::Int)
-        end
-
-
         unless LIST[model]
           model_type_const = "Graphoid::Types::#{Utils.graphqlize(model.name)}Type"
           LIST[model] ||= Graphoid::Types.const_get(model_type_const)
@@ -108,8 +100,6 @@ module Graphoid
                 # using string type to avoid circular dependency
                 # https://github.com/rmosolgo/graphql-ruby/issues/2874#issuecomment-614104142
                 relation_type = "Graphoid::Types::#{relation_name}Type"
-                #warn "Graphoid: warning: #{message} because it was not found as a model" if ENV['DEBUG']
-                #next
               end
 
               name = Utils.camelize(relation.name)
@@ -132,57 +122,14 @@ module Graphoid
 
                 resolver = Graphoid::Resolvers.resolver_class(relation_class, relation_type, relation)
                 field plural_name, resolver: resolver
-
-                #field "x_meta_#{plural_name}", Graphoid::Types::Meta do
-                #  Graphoid::Argument.query_many(self, filter, order, required: false)
-                #  Graphoid::Types.resolve_many(self, relation_class, relation)
-                #end
               else
-                field name, relation_type do
-                  argument :where, filter, required: false
-                  #Graphoid::Types.resolve_one(self, relation_class, relation)
-                end
+                # one-to-one relation
+                field name, relation_type
               end
             end
           end
           LIST[model]
         end
-      end
-
-      #def resolve_one(field, model, association)
-      #  #field.resolve lambda { |obj, args, _ctx|
-      #  #  filter = args['where'].to_h
-      #  #  result = obj.send(association.name)
-      #  #  processor = Graphoid::Queries::Processor
-      #  #  if filter.present? && result
-      #  #    result = processor.execute(model.where(id: result.id), filter).first
-      #  #  end
-      #  #  result
-      #  #}
-      #end
-
-      def resolve_many(field, _model, association)
-        #field.resolve lambda { |obj, args, _ctx|
-        #  filter = args['where'].to_h
-        #  order = args['order'].to_h
-        #  limit = args['limit']
-        #  skip = args['skip']
-
-        #  processor = Graphoid::Queries::Processor
-
-        #  result = obj.send(association.name)
-        #  result = processor.execute(result, filter) if filter.present?
-
-        #  if order.present?
-        #    order = processor.parse_order(obj.send(association.name), order)
-        #    result = result.order(order)
-        #  end
-
-        #  result = result.limit(limit) if limit.present?
-        #  result = result.skip(skip) if skip.present?
-
-        #  result
-        #}
       end
     end
   end

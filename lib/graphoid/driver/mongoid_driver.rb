@@ -190,33 +190,33 @@ module Graphoid
         parsed
       end
 
-      #def relate_embedded(scope, relation, filters)
-      #  # TODO: this way of fetching this is not recursive as the regular fields
-      #  # because the structure of the query is embeeded.field = value
-      #  # we need more brain cells on this problem because it does not allow
-      #  # to filter things using OR/AND
-      #  parsed = {}
-      #  filters.each do |key, value|
-      #    operation = Operation.new(scope, key, value)
-      #    attribute = OpenStruct.new(name: "#{relation.name}.#{operation.operand}")
-      #    obj = parse(attribute, value, operation.operator).first
-      #    parsed[obj[0]] = obj[1]
-      #  end
-      #  parsed
-      #end
+      def relate_embedded(scope, relation, filters)
+        # TODO: this way of fetching this is not recursive as the regular fields
+        # because the structure of the query is embeeded.field = value
+        # we need more brain cells on this problem because it does not allow
+        # to filter things using OR/AND
+        parsed = {}
+        filters.each do |key, value|
+          operation = Operation.new(scope, key, value)
+          attribute = OpenStruct.new(name: "#{relation.name}.#{operation.operand}")
+          obj = parse(attribute, value, operation.operator).first
+          parsed[obj[0]] = obj[1]
+        end
+        parsed
+      end
 
-      #def relate_one(scope, relation, value)
-      #  field = relation.name
-      #  parsed = {}
+      def relate_one(scope, relation, value)
+        field = relation.name
+        parsed = {}
 
-      #  parsed = relate_embedded(scope, relation, value) if relation.embeds_one?
+        parsed = relate_embedded(scope, relation, value) if relation.embeds_one?
 
-      #  parsed = relation.exec(scope, value) if relation.belongs_to?
+        parsed = relation.exec(scope, value) if relation.belongs_to?
 
-      #  parsed = relation.exec(scope, value) if relation.has_one?
+        parsed = relation.exec(scope, value) if relation.has_one?
 
-      #  parsed
-      #end
+        parsed
+      end
 
       def relate_many(scope, relation, value, operator)
         field_name = relation.inverse_name || scope.name.underscore
