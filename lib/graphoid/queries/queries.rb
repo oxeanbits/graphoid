@@ -2,11 +2,9 @@ require 'graphoid/argument'
 
 module Graphoid
   module Queries
-    extend ActiveSupport::Concern
-
-    included do
+    def self.build(model)
       Graphoid.initialize
-      model = self
+      #model = self
       grapho = Graphoid.build(model)
       query_type = ::Types::QueryType
 

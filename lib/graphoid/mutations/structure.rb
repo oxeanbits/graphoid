@@ -4,10 +4,14 @@ require 'graphoid/mutations/delete'
 
 module Graphoid
   module Mutations
-    extend ActiveSupport::Concern
+    #include Graphoid::Mutations::Create
+    #include Graphoid::Mutations::Update
+    #include Graphoid::Mutations::Delete
 
-    include Graphoid::Mutations::Create
-    include Graphoid::Mutations::Update
-    include Graphoid::Mutations::Delete
+    def self.build(model)
+      Graphoid::Mutations::Create.build(model)
+      Graphoid::Mutations::Update.build(model)
+      Graphoid::Mutations::Delete.build(model)
+    end
   end
 end

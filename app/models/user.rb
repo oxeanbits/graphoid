@@ -31,8 +31,8 @@ class User < ApplicationRecord
   #graphorbid :password_digest, type: String
   field :password_digest, type: String
 
-  include Graphoid::Queries
-  include Graphoid::Mutations
+  #include Graphoid::Queries
+  #include Graphoid::Mutations
 
   validates :id, presence: true
   validates :name, presence: true

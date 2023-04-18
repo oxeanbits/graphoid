@@ -3,11 +3,10 @@ require 'graphoid/mutations/processor'
 module Graphoid
   module Mutations
     module Create
-      extend ActiveSupport::Concern
 
-      included do
+      def self.build(model)
         Graphoid.initialize
-        model = self
+        # model = self
         grapho = Graphoid.build(model)
         type = ::Types::MutationType
 

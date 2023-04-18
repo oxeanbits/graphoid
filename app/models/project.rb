@@ -11,8 +11,8 @@ class Project < ApplicationRecord
   field :name, type: String
   field :active, type: Boolean, default: true
 
-  include Graphoid::Queries
-  include Graphoid::Mutations
+  #include Graphoid::Queries
+  #include Graphoid::Mutations
 
   validates :name, presence: true
   validates :id, presence: true
