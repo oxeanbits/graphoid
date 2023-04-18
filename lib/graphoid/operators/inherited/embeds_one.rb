@@ -1,6 +1,3 @@
-require 'graphoid/operators/attribute'
-require 'graphoid/queries/operation'
-
 module Graphoid
   class EmbedsOne < Relation
     def create(parent, value, _)

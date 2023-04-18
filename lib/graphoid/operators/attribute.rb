@@ -1,5 +1,3 @@
-require 'graphoid/utils'
-
 module Graphoid
   class Attribute
     attr_reader :name, :type, :opts

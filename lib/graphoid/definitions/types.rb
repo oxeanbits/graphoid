@@ -1,8 +1,3 @@
-require 'graphoid/operators/attribute'
-require 'graphoid/operators/relation'
-require 'graphoid/mapper'
-require 'graphoid/queries/processor'
-
 module Graphoid
   module Resolvers
     def self.resolver_class(relation_class, relation_type, association)

@@ -1,8 +1,3 @@
-require 'graphoid/utils'
-require 'graphoid/definitions/types'
-require 'graphoid/definitions/filters'
-require 'graphoid/definitions/sorter'
-require 'graphoid/definitions/inputs'
 
 module Graphoid
   class Grapho

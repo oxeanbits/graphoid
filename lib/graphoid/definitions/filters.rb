@@ -1,5 +1,3 @@
-require 'graphoid/operators/relation'
-
 module Graphoid
   module Filters
     LIST = {}

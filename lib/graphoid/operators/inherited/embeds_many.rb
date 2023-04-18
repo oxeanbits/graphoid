@@ -1,7 +1,3 @@
-require 'graphoid/operators/relation'
-require 'graphoid/operators/attribute'
-require 'graphoid/queries/operation'
-
 module Graphoid
   class EmbedsMany < Relation
     def create(parent, values, _)

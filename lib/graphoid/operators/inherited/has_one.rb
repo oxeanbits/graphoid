@@ -1,7 +1,3 @@
-require 'graphoid/operators/relation'
-require 'graphoid/operators/attribute'
-require 'graphoid/queries/processor'
-
 module Graphoid
   class HasOne < Relation
     def create(parent, value, grapho)

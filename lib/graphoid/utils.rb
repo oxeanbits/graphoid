@@ -1,5 +1,3 @@
-require 'graphoid/operators/attribute'
-
 module Graphoid
   module Utils
     class << self

@@ -1,6 +1,3 @@
-require 'graphoid/operators/relation'
-require 'graphoid/operators/attribute'
-
 module Graphoid
   class ManyToMany < Relation
     def create(parent, values, grapho)

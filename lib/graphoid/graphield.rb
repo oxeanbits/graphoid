@@ -1,4 +1,3 @@
-require 'graphoid/operators/attribute'
 
 module Graphoid
   module Graphield

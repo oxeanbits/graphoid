@@ -1,5 +1,3 @@
-require 'graphoid/queries/operation'
-
 module Graphoid
   module Queries
     module Processor

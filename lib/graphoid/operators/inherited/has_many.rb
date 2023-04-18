@@ -1,6 +1,3 @@
-require 'graphoid/operators/relation'
-require 'graphoid/operators/attribute'
-
 module Graphoid
   class HasMany < Relation
     def create(parent, values, grapho)
