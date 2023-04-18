@@ -96,6 +96,7 @@ module Graphoid
               relation_type = LIST[relation_class]
               unless relation_type
                 # using string type to avoid circular dependency
+                # https://github.com/rmosolgo/graphql-ruby/issues/2874#issuecomment-614104142
                 relation_type = "Graphoid::Types::#{relation_name}Type"
                 #warn "Graphoid: warning: #{message} because it was not found as a model" if ENV['DEBUG']
                 #next

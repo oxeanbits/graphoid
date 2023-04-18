@@ -20,6 +20,7 @@ http://127.0.0.1:3000/graphiql
 - [x] delete mutation deleteProject { }
 - [x] query with nested fields single on result projects { example { text } }
 - [x] query with nested fields on result projects { examples { text } }
+- [x] overcoming circular dependency on types (used string types declaration)
 - [ ] query with nested fields on where projects(where: { example: { text: "test" } }) { }
 - [ ] query with nested fields on result and where projects { examples(where: ...) { text } }
 - [ ] enable graphields
