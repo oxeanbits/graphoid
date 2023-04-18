@@ -3,6 +3,8 @@ module Graphoid
     attr_reader :scope, :operand, :operator, :value
 
     def initialize(scope, key, value)
+      # camelize it because graphql 2.0 is passing keys as symbols using underscore format
+      key = key.to_s.camelcase(:lower)
       @scope = scope
       @operator = nil
       @operand = key
@@ -21,6 +23,7 @@ module Graphoid
 
     def build_operand(model, key)
       key = key.to_s if key.is_a? Symbol
+      key = '_id' if key == 'id'
       fields = Attribute.fields_of(model)
 
       field = fields.find { |f| f.name == key }

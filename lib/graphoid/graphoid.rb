@@ -1,6 +1,7 @@
 require 'graphoid/driver/mongoid_driver'
 require 'graphoid/scalars'
 require 'graphoid/grapho'
+require 'graphoid/graphield'
 
 module Graphoid
   @graphs = {}

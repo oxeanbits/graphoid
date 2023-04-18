@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include ActiveModel::SecurePassword
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Graphoid::Graphield
 
   has_secure_password
 
@@ -23,8 +24,8 @@ class User < ApplicationRecord
   field :metadata, type: Hash
   field :project_ids, type: Array
 
-  #graphield :password, type: String
-  #graphield :password_confirmation, type: String
+  graphield :password, type: String
+  graphield :password_confirmation, type: String
 
   ## this is an API hidden field. Not accessible in graphql
   #graphorbid :token, type: String
