@@ -27,6 +27,7 @@ http://127.0.0.1:3000/graphiql
 - [x] enable graphields
 - [x] enable graphorbid
 - [x] tests
+- [x] require all files upfront
 
 
 # Working without crashes but no native eager load
