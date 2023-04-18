@@ -18,7 +18,4 @@ Rails.application.config.after_initialize do
   Graphoid::Queries.build(User)
   Graphoid::Mutations.build(User)
   Graphoid::Mutations.build(Project)
-
-  #Project
-  #User
 end
