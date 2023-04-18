@@ -4,54 +4,60 @@ module Graphoid
 
     class << self
       def generate(model)
-        LIST[model] ||= Class.new(GraphQL::Schema::InputObject) do
-          graphql_name("#{Utils.graphqlize(model.name)}Filter")
-          description("Generated model filter for #{model.name}")
+        unless LIST[model]
+          model_type_const = "Graphoid::Types::#{Utils.graphqlize(model.name)}Filter"
+          LIST[model] ||= Graphoid::Types.const_get(model_type_const)
 
-          m = self
-          argument(:OR,  -> { [m] }, required: false)
-          argument(:AND, -> { [m] }, required: false)
+          LIST[model].class_eval do
+            graphql_name("#{Utils.graphqlize(model.name)}Filter")
+            description("Generated model filter for #{model.name}")
 
-          Attribute.fields_of(model).each do |field|
-            type = Graphoid::Mapper.convert(field)
-            name = Utils.camelize(field.name)
+            m = self
+            argument(:OR,  -> { [m] }, required: false)
+            argument(:AND, -> { [m] }, required: false)
 
-            argument name, type, required: false
+            Attribute.fields_of(model).each do |field|
+              type = Graphoid::Mapper.convert(field)
+              name = Utils.camelize(field.name)
 
-            # m = LIST[model]
-            # argument(:OR,  m, required: false)
-            # argument(:OR,  -> { m }, required: false)
+              argument name, type, required: false
 
-            operators = %w[lt lte gt gte contains not]
-            operators.push('regex') if Graphoid.configuration.driver == :mongoid
+              # m = LIST[model]
+              # argument(:OR,  m, required: false)
+              # argument(:OR,  -> { m }, required: false)
 
-            operators.each do |suffix|
-              argument "#{name}_#{suffix}", type, required: false
+              operators = %w[lt lte gt gte contains not]
+              operators.push('regex') if Graphoid.configuration.driver == :mongoid
+
+              operators.each do |suffix|
+                argument "#{name}_#{suffix}", type, required: false
+              end
+
+              %w[in nin].each do |suffix|
+                argument "#{name}_#{suffix}", [type], required: false
+              end
             end
 
-            %w[in nin].each do |suffix|
-              argument "#{name}_#{suffix}", [type], required: false
-            end
+            #Relation.relations_of(model).each do |name, relation|
+            #  relation_class = relation.class_name.safe_constantize
+            #  next unless relation_class
+
+            #  relation_filter = LIST[relation_class]
+            #  next unless relation_filter
+
+            #  relation_name = Utils.camelize(name)
+
+            #  if Relation.new(relation).many?
+            #    %w[some none every].each do |suffix|
+            #      argument "#{relation_name}_#{suffix}", relation_filter, required: false
+            #    end
+            #  else
+            #    argument relation_name.to_s, relation_filter, required: false
+            #  end
+            #end
           end
-
-          #Relation.relations_of(model).each do |name, relation|
-          #  relation_class = relation.class_name.safe_constantize
-          #  next unless relation_class
-
-          #  relation_filter = LIST[relation_class]
-          #  next unless relation_filter
-
-          #  relation_name = Utils.camelize(name)
-
-          #  if Relation.new(relation).many?
-          #    %w[some none every].each do |suffix|
-          #      argument "#{relation_name}_#{suffix}", relation_filter, required: false
-          #    end
-          #  else
-          #    argument relation_name.to_s, relation_filter, required: false
-          #  end
-          #end
         end
+        LIST[model]
       end
     end
   end

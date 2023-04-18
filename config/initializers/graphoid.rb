@@ -8,10 +8,14 @@ Rails.application.config.after_initialize do
   end
 
   Graphoid.initialize
-  Graphoid::Queries.build(User)
+  Graphoid::Types::ProjectType = Class.new(GraphQL::Schema::Object)
+  Graphoid::Types::UserType = Class.new(GraphQL::Schema::Object)
+  Graphoid::Types::ProjectFilter = Class.new(GraphQL::Schema::InputObject)
+  Graphoid::Types::UserFilter = Class.new(GraphQL::Schema::InputObject)
   Graphoid::Queries.build(Project)
-  Graphoid::Mutations.build(User)
-  Graphoid::Mutations.build(Project)
+  Graphoid::Queries.build(User)
+  #Graphoid::Mutations.build(User)
+  #Graphoid::Mutations.build(Project)
 
   #Project
   #User
