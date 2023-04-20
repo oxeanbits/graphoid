@@ -11,7 +11,7 @@ module Graphoid
       @operand = key
       @value = value
 
-      match = key.match(/^(.+)_(.+)$/)
+      match = key.match(/^(.+)_(lt|lte|gt|gte|contains|not|in|nin|regex)$/)
       @operand, @operator = match[1..2] if match
       @operand = build_operand(@scope, @operand) || @operand
     end
