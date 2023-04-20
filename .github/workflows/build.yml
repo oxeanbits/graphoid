@@ -56,7 +56,7 @@ jobs:
           bundle exec rspec
 
       - name: Original Tests Mongoid Bundle
-        id: rspec-mongo-original
+        id: rspec-mongo-original-bundle
         run: |
           cd spec/original
           gem install bundler:2.4.12
