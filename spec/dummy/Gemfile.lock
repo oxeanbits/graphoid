@@ -1,3 +1,10 @@
+PATH
+  remote: ../..
+  specs:
+    graphoid (1.0.0)
+      graphql (~> 2.0.21)
+      rails (~> 7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -207,6 +214,7 @@ DEPENDENCIES
   bootsnap
   debug
   graphiql-rails
+  graphoid!
   graphql (~> 2.0.21)
   mongoid
   pry-byebug
