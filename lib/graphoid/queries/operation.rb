@@ -33,6 +33,9 @@ module Graphoid
       field = fields.find { |f| f.name == key.underscore }
       return Attribute.new(name: key.underscore, type: field.type) if field
 
+      field = fields.find { |f| f.name == key.camelize(:lower) }
+      return Attribute.new(name: key.camelize(:lower), type: field.type) if field
+
       relations = model.reflect_on_all_associations
 
       relation = relations.find { |r| r.name == key.to_sym }
