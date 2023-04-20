@@ -46,6 +46,7 @@ jobs:
         id: rspec-mongo-new-bundle
         run: |
           cd spec/dummy
+          pwd
           gem install bundler:2.4.12
           bundle install -j 5
 
@@ -53,12 +54,14 @@ jobs:
         id: rspec-mongo-new
         run: |
           cd spec/dummy
+          pwd
           bundle exec rspec
 
       - name: Original Tests Mongoid Bundle
         id: rspec-mongo-original-bundle
         run: |
           cd spec/original
+          pwd
           gem install bundler:2.4.12
           bundle install -j 5
 
