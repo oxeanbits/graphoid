@@ -60,6 +60,7 @@ module Helper
     test.post '/graphql', params: { query: query }
     body = test.response.body
     pp body if ENV['DEBUG']
+    binding.pry
     result = JSON.parse(body)['data']
     result && result[action]
   end

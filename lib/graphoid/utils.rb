@@ -30,6 +30,7 @@ module Graphoid
         attrs = {}
         props.each do |key, value|
           key = key.to_s if key.is_a? Symbol
+          key = key.camelize(:lower) if fields.exclude?(key)
           key = key.underscore if fields.exclude?(key)
           attrs[key] = value
         end
