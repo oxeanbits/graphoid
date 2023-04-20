@@ -54,7 +54,7 @@ jobs:
         id: rspec-mongo-original
         run: |
           cd spec/original
-          DRIVER=mongo bundle exec rspec
+          DRIVER=mongo rspec
 
       - name: New Tests Mongoid Bundle
         id: rspec-mongo-new-bundle
@@ -69,4 +69,4 @@ jobs:
         run: |
           cd spec/dummy
           pwd
-          bundle exec rspec
+          rspec
