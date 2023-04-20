@@ -20,7 +20,7 @@ module Graphoid
               type = Graphoid::Mapper.convert(field)
               name = Utils.camelize(field.name)
 
-              argument name, type, required: false
+              argument name, type, required: false, camelize: false
 
               # m = LIST[model]
               # argument(:OR,  m, required: false)
@@ -30,11 +30,11 @@ module Graphoid
               operators.push('regex') if Graphoid.configuration.driver == :mongoid
 
               operators.each do |suffix|
-                argument "#{name}_#{suffix}", type, required: false
+                argument "#{name}_#{suffix}", type, required: false, camelize: false
               end
 
               %w[in nin].each do |suffix|
-                argument "#{name}_#{suffix}", [type], required: false
+                argument "#{name}_#{suffix}", [type], required: false, camelize: false
               end
             end
 
@@ -51,10 +51,10 @@ module Graphoid
 
               if Relation.new(relation).many?
                 %w[some none every].each do |suffix|
-                  argument "#{relation_name}_#{suffix}", relation_filter, required: false
+                  argument "#{relation_name}_#{suffix}", relation_filter, required: false, camelize: false
                 end
               else
-                argument relation_name.to_s, relation_filter, required: false
+                argument relation_name.to_s, relation_filter, required: false, camelize: false
               end
             end
           end

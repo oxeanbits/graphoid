@@ -64,7 +64,6 @@ end
 
 module Helper
   def self.resolve(test, action, query)
-    binding.pry
     test.post '/graphql', params: { query: query }
     body = test.response.body
     pp body if ENV['DEBUG']
