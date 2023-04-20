@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
+  push:
+    branches:
+      - main
+    paths: ['**/*.rb', '**/*.yml', '**/*.ru', '**/*.erb', '**/*.lock', '**/*.gemspec']
+
+env:
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  graphoid-build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        #ruby: ['2.7.7', '2.7.8', '3.2.2']
+        ruby: ['3.2.2']
+          #mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        mongodb-version: ['4.2']
+
+    steps:
+      - name: Clone
+        id: checkout
+        uses: actions/checkout@v1
+
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Gems
+        id: gems
+        run: |
+          gem install bundler:2.4.12
+          bundle install -j 5
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: New Tests Mongoid
+        id: rspec-mongo-new
+        run: |
+          cd spec/dummy
+          bundle exec rspec
+
+      - name: Original Tests Mongoid
+        id: rspec-mongo-original
+        run: |
+          cd spec/original
+          DRIVER=mongo bundle exec rspec
