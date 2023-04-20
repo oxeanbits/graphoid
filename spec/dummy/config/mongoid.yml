@@ -3,11 +3,11 @@ development:
     default:
       database: digitalize
       hosts:
-        - localhost:32768
+        - localhost:27017
 
 test:
   clients:
     default:
       database: digitalize_test
       hosts:
-        - localhost:32768
+        - localhost:27017
