@@ -7,11 +7,12 @@ module Graphoid
       Class.new(GraphQL::Schema::Resolver) do
         type [relation_type], null: true
 
+        self.const_set(:ASSOCIATION_NAME, association_name)
+
         filter = Graphoid::Filters::LIST[relation_class]
         filter = "Graphoid::Types::#{relation_name}Filter" unless filter
         order  = Graphoid::Sorter::LIST[relation_class]
         order = "Graphoid::Types::#{relation_name}Sorter" unless order
-        @@association_name = association_name
 
         argument :where, filter, required: false
         argument :order, order, required: false
@@ -22,11 +23,12 @@ module Graphoid
           obj = self.object
           processor = Graphoid::Queries::Processor
 
-          result = obj.send(@@association_name)
+          association_name = self.class.const_get(:ASSOCIATION_NAME)
+          result = obj.send(association_name)
           result = processor.execute(result, where) if where.present?
 
           if order.present?
-            order = processor.parse_order(obj.send(@@association_name), order)
+            order = processor.parse_order(obj.send(association_name), order)
             result = result.order(order)
           end
 
