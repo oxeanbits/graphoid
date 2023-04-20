@@ -18,7 +18,7 @@ describe 'MutationDeleteOne', type: :request do
     }
 
     expect(subject['id']).to eq(account.id.to_s)
-    # error = ENV['DRIVER'] == 'mongo' ? Mongoid::Errors::DocumentNotFound
+    # error = ENV['DRIVER'] == 'mongo' ? Mongoid::Errors::DocumentNotFound : ActiveRecord::RecordNotFound
     error = Mongoid::Errors::DocumentNotFound
     expect { account.reload }.to raise_error(error)
   end
