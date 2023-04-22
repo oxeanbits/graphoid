@@ -14,7 +14,7 @@ RSpec.describe GraphqlController, type: :controller do
             id
             name
             active
-            users(where: { nameContains: "i" }, order: { name: DESC}) { id }
+            users(where: { name_contains: "i" }, order: { name: DESC}) { id }
           }
         }
       GRAPHQL
@@ -85,7 +85,7 @@ RSpec.describe GraphqlController, type: :controller do
     let(:query) do
       <<-GRAPHQL
         {
-          users(where: { project: { nameContains: "BK" }}) {
+          users(where: { project: { name_contains: "BK" }}) {
             name
             email
             active
@@ -148,7 +148,7 @@ RSpec.describe GraphqlController, type: :controller do
       <<-GRAPHQL
         {
           users(where: { OR: [
-            {project: { nameContains: "BK" }}, {project: { nameContains: "Ox" }}
+            {project: { name_contains: "BK" }}, {project: { name_contains: "Ox" }}
           ]}) {
             name
           }

@@ -3,7 +3,7 @@ PATH
   specs:
     graphoid (1.0.0)
       graphql (~> 2.0.21)
-      rails (~> 7.0)
+      rails (>= 6.0)
 
 GEM
   remote: https://rubygems.org/
