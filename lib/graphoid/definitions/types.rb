@@ -51,9 +51,11 @@ module Graphoid
           type_const = "#{model.name}Type"
           filter_const = "#{model.name}Filter"
           sorter_const = "#{model.name}Sorter"
+          #input_const = "#{model.name}Input"
           Graphoid::Types::const_set(type_const, Class.new(GraphQL::Schema::Object))
           Graphoid::Types::const_set(filter_const, Class.new(GraphQL::Schema::InputObject))
           Graphoid::Types::const_set(sorter_const, Class.new(GraphQL::Schema::InputObject))
+          #Graphoid::Types::const_set(input_const, Class.new(GraphQL::Schema::InputObject))
         end
       end
 
