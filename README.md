@@ -1,0 +1,83 @@
+# Digitalize Upgrade to rails 7 and Upgrade of Graphql Ruby
+
+```
+sudo apt-get install libssl1.1
+rvm install ruby-3.2.2 --with-yjit --with-openssl-dir=/opt/openssl-1.1.1q/
+```
+
+## Testing
+
+http://127.0.0.1:3000/graphiql
+
+# roadmap
+
+- [x] single query project { }
+- [x] many query projects { }
+- [x] where query projects(where: { }) { }
+- [x] order query projects(order: { }) { }
+- [x] create mutation createProject { }
+- [x] update mutation updateProject { }
+- [x] delete mutation deleteProject { }
+- [x] query with nested fields single on result projects { example { text } }
+- [x] query with nested fields on result projects { examples { text } }
+- [x] overcoming circular dependency on types (used string types declaration)
+- [x] query with nested fields on where projects(where: { example: { text: "test" } }) { }
+- [x] query with nested fields on result and where projects { examples(where: ...) { text } }
+- [x] query with some, none and every operators projects { examples(where: { field_some: ...}) { text } }
+- [x] Improve initialization and module enabling on models
+- [x] enable graphields
+- [x] enable graphorbid
+- [x] tests
+- [x] require all files upfront
+- [ ] support Rails.appplication.eager_load!
+
+
+# Working without crashes but no native eager load
+
+{
+  testField
+  example {
+    dateTime
+    date
+    time
+    timestamp
+    text
+    bigInt
+    decimal
+    hashField
+    array
+  }
+  project(where:{
+    OR: [{nameIn: ["Test"]}]
+  }) {
+    id name createdAt updatedAt active
+
+  }
+  projects(order: { name: DESC}, where: { active: true}) {
+    active
+    name
+    id
+    createdAt
+    updatedAt
+  }
+}
+
+
+mutation m{
+  createProject(data: {
+    name: "Jhon"
+  }) {
+    id
+    name
+  }
+}
+
+
+## References
+
+https://graphql-ruby.org/queries/ast_analysis.html
+https://graphql-ruby.org/errors/error_handling
+https://github.com/rmosolgo/graphql-ruby/issues?q=is%3Aissue+circular+loading
+https://github.com/rmosolgo/graphql-ruby/issues/2716#issuecomment-582503380
+
+https://guides.rubyonrails.org/active_model_basics.html#securepassword

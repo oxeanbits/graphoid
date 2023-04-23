@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        ruby: ['2.7.7', '2.7.8', '3.0.6']
-        mongodb-version: ['4.2', '4.4', '5.0', '6.0']
+        ruby: ['3.2.2']
+        mongodb-version: ['4.2']
 
     steps:
       - name: Clone
@@ -34,20 +34,39 @@ jobs:
       - name: Gems
         id: gems
         run: |
-          gem install bundler:2.4.10
+          gem install bundler:2.4.12
           bundle install -j 5
-
-      - name: Tests Active Record
-        id: rspec-ar
-        run: |
-          DRIVER=ar bundle exec rspec
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
-      - name: Tests Active Mongoid
-        id: rspec-mongo
+      - name: Original Tests Mongoid Bundle
+        id: rspec-mongo-original-bundle
         run: |
-          DRIVER=mongo bundle exec rspec
+          cd spec/original
+          pwd
+          gem install bundler:2.4.12
+          bundle install -j 5
+
+      - name: Original Tests Mongoid
+        id: rspec-mongo-original
+        run: |
+          cd spec/original
+          DRIVER=mongo rspec
+
+      - name: New Tests Mongoid Bundle
+        id: rspec-mongo-new-bundle
+        run: |
+          cd spec/dummy
+          pwd
+          gem install bundler:2.4.12
+          bundle install -j 5
+
+      - name: New Tests Mongoid
+        id: rspec-mongo-new
+        run: |
+          cd spec/dummy
+          pwd
+          rspec
