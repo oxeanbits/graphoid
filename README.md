@@ -1,83 +1,83 @@
-# Digitalize Upgrade to rails 7 and Upgrade of Graphql Ruby
 
+<img src="https://cl.ly/aeaacddab2e2/graphoid.png" height="150" alt="graphoid"/>
+
+[![CI](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml)
+[![Gem Version](https://img.shields.io/badge/gem%20version-0.2.0-green)](https://rubygems.org/gems/graphoid)
+[![Maintainability](https://api.codeclimate.com/v1/badges/96505308310ca4e7e241/maintainability)](https://codeclimate.com/github/maxiperezc/graphoid/maintainability)
+
+Generates a full GraphQL API using introspection of Mongoid or ActiveRecord models.
+
+## API Documentation
+The [API Documentation](https://maxcoto.github.io/graphoid/) that displays how to use the queries and mutations that Graphoid automatically generates.
+
+
+## Dependency
+This gem depends on [the GraphQL gem](https://github.com/rmosolgo/graphql-ruby).
+Please install that gem first before continuing
+
+## Installation
+Add this line to your Gemfile:
+
+```ruby
+gem 'graphoid', git: 'https://github.com/oxeanbits/graphoid.git', tag: '0.2.0'
 ```
-sudo apt-get install libssl1.1
-rvm install ruby-3.2.2 --with-yjit --with-openssl-dir=/opt/openssl-1.1.1q/
+
+```bash
+$ bundle install
 ```
+
+## Database
+Create the file `config/initializers/graphoid.rb`
+And configure the database you want to use in it (:mongoid or :active_record)
+
+```ruby
+Graphoid.configure do |config|
+  config.driver = :mongoid
+end
+```
+
+## Usage
+You can determine which models will be visible in the API by including the Graphoid Queries and Mutations concerns
+
+```ruby
+class Person
+  include Graphoid::Queries
+  include Graphoid::Mutations
+end
+```
+
+## Examples
+You can find an example that uses ActiveRecord in the [Tester AR folder](https://github.com/maxiperezc/graphoid/tree/master/spec/tester_ar)  
+And an example with Mongoid in the [Tester Mongo folder](https://github.com/maxiperezc/graphoid/tree/master/spec/tester_mongo)  
+In this same repository.
+
+
+
+## Contributing
+- Live Reload
+- Aggregations
+- Permissions on fields
+- Relation with aliases tests
+- Write division for "every" in Mongoid and AR
+- Sort top level models by association values
+- Filter by Array or Hash.
+- has_one_through implementation
+- has_many_selves tests
+- has_and_belongs_to_many_selves tests
+- Embedded::Many filtering implementation
+- Embedded::One filtering with OR/AND
+
 
 ## Testing
+```bash
+$ DRIVER=ar DEBUG=true bundle exec rspec
+$ DRIVER=mongo DEBUG=true bundle exec rspec
+```
 
-http://127.0.0.1:3000/graphiql
+## Thank You !!
+[Ryan Yeske](https://github.com/rcy) for the whole idea and for validating that metaprogramming this was possible.
 
-# roadmap
+[Andres Rafael](https://github.com/aandresrafael) for working so hard on connecting the gem on the frontend and finding its failures.
 
-- [x] single query project { }
-- [x] many query projects { }
-- [x] where query projects(where: { }) { }
-- [x] order query projects(order: { }) { }
-- [x] create mutation createProject { }
-- [x] update mutation updateProject { }
-- [x] delete mutation deleteProject { }
-- [x] query with nested fields single on result projects { example { text } }
-- [x] query with nested fields on result projects { examples { text } }
-- [x] overcoming circular dependency on types (used string types declaration)
-- [x] query with nested fields on where projects(where: { example: { text: "test" } }) { }
-- [x] query with nested fields on result and where projects { examples(where: ...) { text } }
-- [x] query with some, none and every operators projects { examples(where: { field_some: ...}) { text } }
-- [x] Improve initialization and module enabling on models
-- [x] enable graphields
-- [x] enable graphorbid
-- [x] tests
-- [x] require all files upfront
-- [ ] support Rails.appplication.eager_load!
-
-
-# Working without crashes but no native eager load
-
-{
-  testField
-  example {
-    dateTime
-    date
-    time
-    timestamp
-    text
-    bigInt
-    decimal
-    hashField
-    array
-  }
-  project(where:{
-    OR: [{nameIn: ["Test"]}]
-  }) {
-    id name createdAt updatedAt active
-
-  }
-  projects(order: { name: DESC}, where: { active: true}) {
-    active
-    name
-    id
-    createdAt
-    updatedAt
-  }
-}
-
-
-mutation m{
-  createProject(data: {
-    name: "Jhon"
-  }) {
-    id
-    name
-  }
-}
-
-
-## References
-
-https://graphql-ruby.org/queries/ast_analysis.html
-https://graphql-ruby.org/errors/error_handling
-https://github.com/rmosolgo/graphql-ruby/issues?q=is%3Aissue+circular+loading
-https://github.com/rmosolgo/graphql-ruby/issues/2716#issuecomment-582503380
-
-https://guides.rubyonrails.org/active_model_basics.html#securepassword
+## License
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
