@@ -26,13 +26,7 @@ module Graphoid
         # Syntax => name, type, description
         field :count, GraphQL::Types::Int, null: true
 
-        #field :pageSize, !GraphQL::Types::Int, I18n.t('pagination.page_size_hint') do
-        #  resolve lambda { |obj, _args, _ctx|
-        #    return PAGE_SIZE if obj.options[:limit].nil? or obj.options[:limit] > PAGE_SIZE
-
-        #    obj.options[:limit]
-        #  }
-        #end
+        field :pageSize, GraphQL::Types::Int, null: true
 
         #field :pages, !types.Int, I18n.t('pagination.pages_hint') do
         #  resolve lambda { |obj, _args, _ctx|
@@ -51,6 +45,12 @@ module Graphoid
         def data
           return object.eager_load if object.respond_to? :eager_load
           object
+        end
+
+        def page_size
+          return PAGE_SIZE if object.options[:limit].nil? or object.options[:limit] > PAGE_SIZE
+
+          object.options[:limit]
         end
       end
 
