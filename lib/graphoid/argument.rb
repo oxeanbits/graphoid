@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   # A module that defines the query packet arguments
   module Argument

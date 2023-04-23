@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   # module that helps executing mongoid specific code
   module MongoidDriver

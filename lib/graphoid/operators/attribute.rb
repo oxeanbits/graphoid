@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   class Attribute
     attr_reader :name, :type, :opts

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'graphoid/utils'
 require 'graphoid/grapho'
 require 'graphoid/mapper'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExampleType < GraphQL::Schema::Object
   graphql_name "Example"
 

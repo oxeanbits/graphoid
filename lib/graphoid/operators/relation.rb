@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   class Relation
     attr_reader :name, :klass, :type, :inverse_name

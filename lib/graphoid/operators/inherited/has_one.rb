@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   class HasOne < Relation
     def create(parent, value, grapho)

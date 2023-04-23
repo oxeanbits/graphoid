@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'graphoid/queries/queries'
 require 'graphoid/mutations/structure'
 

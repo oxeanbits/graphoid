@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   module Queries
     def self.generate(*models)

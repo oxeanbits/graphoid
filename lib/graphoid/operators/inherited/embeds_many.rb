@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   class EmbedsMany < Relation
     def create(parent, values, _)

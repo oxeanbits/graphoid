@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   class Operation
     attr_reader :scope, :operand, :operator, :value

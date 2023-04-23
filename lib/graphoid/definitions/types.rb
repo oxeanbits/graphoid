@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphoid
   module Resolvers
     def self.resolver_class(relation_class, relation_type, association)
