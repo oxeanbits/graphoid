@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Graphoid v0.1.0</title>
+<!-- Meta -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="favicon.ico">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<!-- FontAwesome JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
+<!-- Global CSS -->
+<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+<!-- Plugins CSS -->
+<link rel="stylesheet" href="assets/plugins/prism/prism.css">
+<link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+<!-- Theme CSS -->
+<link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body class="body-green">
+<div class="page-wrapper">
+<!-- ******Header****** -->
+<header id="header" class="header">
+<div class="container">
+<div class="branding">
+<h1 class="logo">
+<a href="https://github.com/maxiperezc/graphoid">
+<span aria-hidden="true" class="icon_documents_alt icon"></span>
+<span class="text-highlight">Graphoid</span> <span class="text-bold">Docs</span>
+</a>
+</h1>
+</div><!--//branding-->
+<ol class="breadcrumb">
+<li class="breadcrumb-item">Generates a full GraphQL API using introspection of Mongoid or ActiveRecord models.</li>
+</ol>
+<div class="top-search-box">
+<form class="form-inline search-form justify-content-center" action="" method="get">
+<input type="text" placeholder="Search..." name="search" class="form-control search-input">
+<button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+</form>
+</div>
+</div><!--//container-->
+</header><!--//header-->
+<div class="doc-wrapper">
+<div class="container">
+<div class="doc-body row">
+<div class="doc-content col-md-9 col-12 order-1">
+<div class="content-inner">
+
+
+
+
+
+
+
+
+
+<section id="prerequisites-section" class="doc-section">
+  <h2 class="section-title">Prerequisites</h2>
+  <div class="section-block">
+    <p>Graphoid depends on the GraphQL implementation for Ruby. To have that gem installed you can visit <a href="https://github.com/rmosolgo/graphql-ruby">graphql-ruby</a> to install it or:</p>
+
+    <div class="code-block">
+      <h6>Add graphql to your Gemfile</h6>
+      <pre><code class="language-git">gem "graphql"</code></pre>
+    </div>
+
+    <div class="code-block">
+      <pre><code class="language-git">$ bundle install
+$ rails generate graphql:install</code></pre>
+    </div>
+  </div>
+  
+  <div class="section-block">
+    <p>You can optionally install <a href="https://github.com/rmosolgo/graphql-ruby">GraphQL Playground</a>, a visual client to start querying the server</p>
+
+    <div class="code-block">
+      <h6>GraphQL Playground</h6>
+      <pre><code class="language-git">$ brew cask install graphql-playground</code></pre>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="installation-section" class="doc-section">
+  <h2 class="section-title">Installation</h2>
+  <div class="section-block">
+    <div class="code-block">
+      <h6>Add graphoid to your Gemfile</h6>
+      <pre><code class="language-git">gem "graphoid"</code></pre>
+    </div>
+
+    <div class="code-block">
+      <pre><code class="language-git">$ bundle install</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="database-section" class="doc-section">
+  <h2 class="section-title">Database</h2>
+
+  <div class="section-block">
+    <p>Graphoid works trasparently with ActiveRecord or Mongoid</p>
+    <p>Create the configuration file <b>config/initializers/graphoid.rb</b></p>
+
+    <div id="ruby1">
+      <div class="code-block">
+        <h6>If you use ActiveRecord</h6>
+        <pre><code class="language-ruby">Graphoid.configure do |config|
+  config.driver = :active_record
+end</code></pre>
+      </div>
+    </div>
+
+    <div id="ruby2">
+      <div class="code-block">
+        <h6>If you use Mongoid</h6>
+        <pre><code class="language-ruby">Graphoid.configure do |config|
+  config.driver = :mongoid
+end</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="usage-section" class="doc-section">
+  <h2 class="section-title">Usage</h2>
+  <div class="section-block">
+    <p>
+      By adding the concerns, you can tell graphoid which of your models will be visible in the API.<br />
+      You can include either the Queries or Mutations models or both.<br />
+      The Queries concern exposes read access by exposing query resolvers in the API.<br />
+      The Mutations concern exposes write access by exposing create/update/delete resolvers in the API.
+    </p>
+
+    <div id="ruby1">
+      <div class="code-block">
+        <pre><code class="language-ruby">class Person < ApplicationRecord
+  include Graphoid::Queries
+  include Graphoid::Mutations
+
+  # columns are 
+  # id: integer
+  # name: string
+  # money: float
+  # feet_size: string
+
+  has_many :accounts
+  has_one :horse
+  belongs_to :country
+end</code></pre>
+      </div>
+    </div>
+    
+    <p>
+      If you want to play with the autogenerated API at this point you can install <a target="_blank" href="https://github.com/rmosolgo/graphiql-rails">GraphiQL</a>
+      <br />Run your server and visit <a target="_blank" href="http://localhost:3000/graphiql">http://localhost:3000/graphiql</a><br />
+    </p>
+    
+    <p>
+      There is a live demo where you can execute the queries of this document<br />
+    </p>
+    
+    <a target="_blank" href="https://legacy.graphqlbin.com/new?endpoint=https://graphoid.herokuapp.com/graphql" class="btn btn-primary btn-cta">
+      <i class="fas fa-play-circle"></i> Live Demo
+    </a>
+  </div>
+</section>
+
+<section id="queries-section" class="doc-section">
+  <h2 class="section-title">Queries</h2>
+  <div class="section-block">
+    <p>
+      The queries to fetch one or many records from the rails model will be autogerated.<br />
+      You can make use of autogenerated filters too, see filters in the <a class="scrollto" href="#filters-section">filters section</a><br />
+      Model associations (has_many, belongs_to, etc) can be fetched and filtered too within the same query.
+    </p>
+
+    <div id="ruby2">
+      <div class="code-block">
+        <h6>Query a single object by ID</h6>
+        <pre><code class="language-javascript">query {
+  person(id: 1) {
+    id
+    name
+    feetSize
+    accounts {
+      id
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div class="callout-block callout-info">
+      <div class="icon-holder"><i class="fas fa-info-circle"></i></div>
+      <div class="content">
+        <h4 class="callout-title">Attribute Names</h4>
+        <p>All of the attributes that were using snake case syntax (snake_case) in the ruby models are exposed in the queries/mutations as camel cased (camelCase).</p>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Query the first match</h6>
+        <pre><code class="language-javascript">query {
+  person(where: { name: "max" }) {
+    id
+    name
+    horse {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Query many records</h6>
+        <pre><code class="language-javascript">query {
+  people(where: { name_contains: "max" }) {
+    id
+    name
+    country {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="mutations-section" class="doc-section">
+  <h2 class="section-title">Mutations</h2>
+  <div class="section-block">
+    <p>
+      Mutations to create, update and delete one or many records will be autogerated.<br />
+      You can make use of autogenerated filters too in order to select what to update or delete.<br />
+    </p>
+  </div>
+  
+  <div id="create" class="section-block">
+    <h4 class="block-title">Create</h4>
+    <div id="ruby2">
+      <div class="code-block">
+        <h6>Create a single record</h6>
+        <pre><code class="language-javascript">mutation {
+  createPerson(data: { name: "bob" }) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Query many records</h6>
+        <pre><code class="language-javascript">mutation {
+  createManyPeople(data: [{ name: "max" }, { name: "bob" }]) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Create related records</h6>
+        <pre><code class="language-javascript">mutation {
+  createPerson(data: { name: "max", horse: { name: "unicorn" } }) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+  
+
+  <div id="update" class="section-block">
+    <h4 class="block-title">Update</h4>
+    <div id="ruby2">
+      <div class="code-block">
+        <h6>Update a single record</h6>
+        <pre><code class="language-javascript">mutation {
+  updatePerson(id: 1, data: { name: "bob" }) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Update many records</h6>
+        <pre><code class="language-javascript">mutation {
+  updateManyPeople(where: { FILTER }, data: [{ name: "max" }]) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div id="delete" class="section-block">
+    <h4 class="block-title">Delete</h4>
+    <div id="ruby2">
+      <div class="code-block">
+        <h6>Delete a single record</h6>
+        <pre><code class="language-javascript">mutation {
+  deletePerson(id: 1) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <h6>Delete many records</h6>
+        <pre><code class="language-javascript">mutation {
+  deleteManyPeople(where: { FILTER }) {
+    id
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- FILTERS ------------------------------------------------------------------------------------------------------------>
+
+
+<section id="filters-section" class="doc-section">
+  <h2 class="section-title">Filters</h2>
+  <div class="section-block">
+    <p>
+      You can make use of the autogenerated filters to execute and get the result you want by properly applying them.<br />
+      The available filters you can use are the ones listed below:
+    </p>
+  </div>
+  
+  <div class="section-block">
+    <div>
+      <h4 id="equal">Equal</h4>
+      <div class="code-block">
+        <h6>The field is equal to the value passed as parameter</h6>
+        <p>Get all people named bob</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name: "bob" }) {
+    id
+    name
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <h4 id="not_equal">Not Equal (_not)</h4>
+      <div class="code-block">
+        <h6>The field is different from the value passed as parameter</h6>
+        <p>Get all people who are not named bob</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name_not: "bob" }) {
+    id
+    name
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <h4 id="contains">Contains (_contains)</h4>
+      <div class="code-block">
+        <h6>The field contains the value passed as parameter</h6>
+        <p>Get all people that has a "b" on their name</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name_contains: "b" }) {
+    id
+    name
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    
+    <div>
+      <h4 id="regex">Regex (_regex)</h4>
+      
+      <div class="code-block">
+        <h6>The field matches the regex passed as parameter</h6>
+        <p>Get all people that have a name with a letter between "a" and "g"</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name_regex: "[a-g]/i" }) {
+    id
+    name
+  }
+}</code></pre>
+      </div>
+      <div class="callout-block callout-info">
+        <div class="icon-holder"><i class="fas fa-info-circle"></i></div>
+        <div class="content">
+          <h4 class="callout-title">Mongoid Only</h4>
+          <p>The Regex filter is only available if you are using mongoid.</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div>
+      <h4 id="in">In (_in)</h4>
+      <div class="code-block">
+        <h6>The field is one of the values of the array</h6>
+        <p>Get all people who are named bob or maxi</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name_in: ["max", "bob"] }) {
+    id
+    name
+    money
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <h4 id="not_in">Not In (_nin)</h4>
+      <div class="code-block">
+        <h6>The field is NOT one of the values of the array</h6>
+        <p>Get all people who are not named bob or maxi</p>
+        <pre><code class="language-javascript">query {
+  people(where: { name_nin: ["max", "bob"] }) {
+    id
+    name
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    
+    <div>
+      <h4 id="gte">GTE (_gte)</h4>
+      <div class="code-block">
+        <h6>The field is greater than or equal than the value</h6>
+        <p>Get all people with $30.30 or more money</p>
+        <pre><code class="language-javascript">query {
+  people(where: { money_gte: 30.3 }) {
+    id
+    name
+    money
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <h6 id="lte">LTE (_lte): Less Than or Equal (<=)</h6>
+    <h6 id="gt">GT (_gt): Greater Than (>)</h6>
+    <h6 id="lt">LT (_lt): Less Than (<)</h6>
+    
+    <br />
+    
+    
+    <div>
+      <h4 id="and">AND</h4>
+      
+      <div class="code-block">
+        <h6>Combines different filters in a logical AND operation.</h6>
+        <p>Get all people named "max" and with more than $30</p>
+        <pre><code class="language-javascript">query {
+  people(where: { 
+    AND: [
+      { name: "max" },
+      { money_gte: 30 }
+    ]
+  }) {
+    id
+    name
+    money
+  }
+}</code></pre>
+      </div>
+
+      <div class="code-block">
+        <h6>The same result is obtained by passing an object with many elements.</h6>
+        <pre><code class="language-javascript">query {
+  people(where: { name: "max", money_gte: 30 }) {
+    id
+    name
+    money
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    
+    <div>
+      <h4 id="or">OR</h4>
+      
+      <div class="code-block">
+        <h6>Combines different filters in a logical OR operation.</h6>
+        <p>Get all people named "max" or with more than $30</p>
+        <pre><code class="language-javascript">query {
+  people(where: { 
+    OR: [
+      { name: "max" },
+      { money_gte: 30 }
+    ]
+  }) {
+    id
+    name
+    money
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+<section id="associations-section" class="doc-section">
+  <h2 class="section-title">Associations</h2>
+  <div class="section-block">
+    <p>
+      Graphoid will automatically inpect the relations that your model has and provide the corresponding API to query information on those relations too<br />
+    </p>
+
+    <div>
+      <h4 id="has_one">Has One | Belongs To</h4>
+
+      <div class="code-block">
+        <p>Fetch all people with a white horse</p>
+        <pre><code class="language-javascript">query {
+  people(where: { horse: { color: "white" } }){
+    id
+    name
+    horse {
+      id
+      color
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <h4 id="has_many">Has Many | Has And Belongs To Many</h4>
+
+      <div class="code-block">
+        <p><b>_some</b> : fetch all people with a at least 1 google account</p>
+        <pre><code class="language-javascript">query {
+  people(where: { accounts_some: { name: "google" } }){
+    id
+    name
+    accounts {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+      
+      <div class="code-block">
+        <p><b>_none</b> : fetch all people without a google account</p>
+        <pre><code class="language-javascript">query {
+  people(where: { accounts_none: { name: "google" } }){
+    id
+    name
+    accounts {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+      
+      
+      <div class="code-block">
+        <p><b>_every</b>: fetch all people that has only google accounts and no other accounts</p>
+        <pre><code class="language-javascript">query {
+  people(where: { accounts_every: { name: "google" } }){
+    id
+    name
+    accounts {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    
+    <div>
+      <h4 id="nested">Nested Filters</h4>
+
+      <div class="code-block">
+        <p>You can make use of the same filters described above to filter model associations</p>
+        <p>Fetch all people with all their google accounts. If a person had a facebook account, that account wont appear. <br />It does not affect the person model, only the accounts.</p>
+
+        <pre><code class="language-javascript">query {
+  people(){
+    id
+    name
+    accounts(where: { name: "google" }) {
+      id
+      name
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</section>
+
+
+
+
+<section id="order-section" class="doc-section">
+  <h2 class="section-title">Order</h2>
+  <div class="section-block">
+    <p>
+      Graphoid provides the "order" feature by any field that is present on the model<br />
+    </p>
+
+    <div>
+      <div class="code-block">
+        <p>Fetch all people ordered descendently by name</p>
+        <pre><code class="language-javascript">query {
+  people(order: { name: DESC }){
+    id
+    name
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<section id="attributes-section" class="doc-section">
+  <h2 class="section-title">Attributes</h2>
+  <div class="section-block">
+    <p>
+      The Graphield concern can be used to create new virtual attributes .<br />
+      A virtual attribute always needs a method with the same name, in order to be resolved.
+    </p>
+
+    <div>
+      <div class="code-block">
+        <pre><code class="language-ruby">class Person
+  include Graphoid::Graphield
+
+  graphield :full_name, String
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+end</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <div class="code-block">
+        <p>After defining how full_name is resolved you can use it on your queries.</p>
+        <pre><code class="language-javascript">query {
+  people(){
+    id
+    name
+    fullName
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="permissions-section" class="doc-section">
+  <h2 class="section-title">Permissions</h2>
+  <div class="section-block">
+    <p>
+      Graphield concern is also used to forbid access to existing fields.<br />
+      One use would be not to expose the password field.
+    </p>
+
+    <div id="ruby2">
+      <div class="code-block">
+        <pre><code class="language-ruby">class Person
+  include Graphoid::Graphield
+
+  graphorbid :password # will not be exposed in the API
+end</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="callout-block callout-warning">
+<div class="icon-holder">
+<i class="fas fa-bug"></i>
+</div>
+  <div class="content">
+    <h4 class="callout-title">Field Level Permission is Comming !</h4>
+    <p>I am working very hard to include a dynamic field level permission system that is going to be highly configurable.</p>
+  </div>
+</div>
+
+
+
+<section id="aggregations-section" class="doc-section">
+  <h2 class="section-title">Aggregations</h2>
+  <div class="section-block">
+    <p>
+      Meta queries are used to get data about the data.<br />
+    </p>
+
+    <div>
+      <h4 id="count">Count</h4>
+      
+      <div class="code-block">
+        <h6>Counts all the records that matches the filter</h6>
+        <pre><code class="language-javascript">query {
+  xMetaPeople(where: { name: "max" }) {
+    count
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <div>
+      <h4 id="sum">Sum</h4>
+      
+      <div class="code-block">
+        <h6>Sums all the records that matches the filter.</h6>
+        <pre><code class="language-javascript">query {
+  xMetaPeople(where: { name: "max" }) {
+    id
+    name
+    sum(data: ["money"])
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="callout-block callout-warning">
+    <div class="icon-holder">
+    <i class="fas fa-bug"></i>
+    </div>
+      <div class="content">
+        <h4 class="callout-title">Sum Is Under Development !</h4>
+        <p>Aggregations is a feature that is still under development. Ideas for the syntax or implementation are very welcomed.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+<a href="#" class="btn btn-primary btn-cta"><i class="fas fa-play-circle"></i> Execute</a>
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ejBkOjEG6F0?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div><!--//content-inner-->
+</div><!--//doc-content-->
+<div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+<div id="doc-nav" class="doc-nav">
+
+<nav id="doc-menu" class="nav doc-menu flex-column sticky">
+  
+<h5 style="margin-left: 15px;"><a href="https://github.com/maxiperezc/graphoid">Graphoid v0.1.0</a></h5>
+  
+<a class="nav-link scrollto" href="#prerequisites-section">Prerequisites</a>
+<a class="nav-link scrollto" href="#installation-section">Installation</a>
+<a class="nav-link scrollto" href="#database-section">Database</a>
+<a class="nav-link scrollto" href="#usage-section">Usage</a>
+<a class="nav-link scrollto" href="#queries-section">Queries</a>
+<a class="nav-link scrollto" href="#mutations-section">Mutations</a>
+<nav class="doc-sub-menu nav flex-column">
+  <a class="nav-link scrollto" href="#create">create</a>
+  <a class="nav-link scrollto" href="#update">update</a>
+  <a class="nav-link scrollto" href="#delete">delete</a>
+</nav>
+<a class="nav-link scrollto" href="#filters-section">Filters</a>
+<nav class="doc-sub-menu nav flex-column">
+  <a class="nav-link scrollto" href="#equal">equal</a>
+  <a class="nav-link scrollto" href="#not_equal">not equal</a>
+  <a class="nav-link scrollto" href="#contains">contains</a>
+  <a class="nav-link scrollto" href="#regex">regex</a>
+  <a class="nav-link scrollto" href="#in">in</a>
+  <a class="nav-link scrollto" href="#not_in">not in</a>
+  <a class="nav-link scrollto" href="#gte">greater than or equal</a>
+  <a class="nav-link scrollto" href="#lte">less than or equal</a>
+  <a class="nav-link scrollto" href="#gt">greater than</a>
+  <a class="nav-link scrollto" href="#lt">less than</a>
+  <a class="nav-link scrollto" href="#and">AND</a>
+  <a class="nav-link scrollto" href="#or">OR</a>
+</nav><!--//nav-->
+<a class="nav-link scrollto" href="#associations-section">Associations</a>
+<nav class="doc-sub-menu nav flex-column">
+  <a class="nav-link scrollto" href="#has_one">has one</a>
+  <a class="nav-link scrollto" href="#has_many">has many</a>
+  <a class="nav-link scrollto" href="#nested">nested filters</a>
+</nav><!--//nav-->
+<a class="nav-link scrollto" href="#attributes-section">Attributes</a>
+<a class="nav-link scrollto" href="#permissions-section">Permissions</a>
+<a class="nav-link scrollto" href="#aggregations-section">Aggregations</a>
+<nav class="doc-sub-menu nav flex-column">
+<a class="nav-link scrollto" href="#count">count</a>
+<a class="nav-link scrollto" href="#sum">sum</a>
+
+</nav><!--//nav-->
+</nav><!--//doc-menu-->
+
+</div>
+</div><!--//doc-sidebar-->
+</div><!--//doc-body-->
+</div><!--//container-->
+</div><!--//doc-wrapper-->
+
+
+</div><!--//page-wrapper-->
+
+<footer id="footer" class="footer text-center">
+<div class="container">
+<span class="copyright">Developed with <i class="fas fa-heart"></i> by <a href="https://www.maxiperezcoto.com/" target="_blank" style="color: #ff76b2;">Maxi</a>
+
+</div><!--//container-->
+</footer><!--//footer-->
+
+
+<!-- Main Javascript -->
+<script type="text/javascript" src="assets/plugins/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
+<script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+<script type="text/javascript" src="assets/js/main.js"></script>
+
+</body>
+</html>
