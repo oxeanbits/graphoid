@@ -46,13 +46,12 @@ module Graphoid
         #  resolve ->(obj, _args, _ctx) { obj.options[:skip] || 0 }
         #end
 
-        #field :data, types[grapho.type], I18n.t('pagination.data', name: grapho.name) do
-        #  resolve lambda { |obj, _args, _ctx|
-        #    return obj.eager_load if obj.respond_to? :eager_load
+        field :data, [grapho.type], null: true
 
-        #    obj
-        #  }
-        #end
+        def data
+          return object.eager_load if object.respond_to? :eager_load
+          object
+        end
       end
 
       #query_type.field name: grapho.plural, type: [grapho.type], null: true do
