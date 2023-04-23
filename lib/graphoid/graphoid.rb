@@ -18,6 +18,7 @@ require 'graphoid/operators/inherited/has_one'
 require 'graphoid/operators/inherited/many_to_many'
 
 require 'graphoid/queries/queries'
+require 'graphoid/queries/pagination'
 require 'graphoid/queries/processor'
 require 'graphoid/queries/operation'
 
