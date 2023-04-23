@@ -2,6 +2,8 @@ module Graphoid
   class Operation
     attr_reader :scope, :operand, :operator, :value
 
+    OPERATORS_REGEX = /^(.+)_(lt|lte|gt|gte|contains|not|in|nin|regex|some|none|every)$/.freeze
+
     def initialize(scope, key, value, camelize: false)
       # camelize it because graphql 2.0 is passing keys as symbols using underscore format
       # but for queries we need the underscore format to identify operators such as contains, regex
@@ -11,7 +13,7 @@ module Graphoid
       @operand = key
       @value = value
 
-      match = key.match(/^(.+)_(lt|lte|gt|gte|contains|not|in|nin|regex)$/)
+      match = key.match(OPERATORS_REGEX)
       @operand, @operator = match[1..2] if match
       @operand = build_operand(@scope, @operand) || @operand
     end
