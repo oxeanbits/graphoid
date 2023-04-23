@@ -26,8 +26,9 @@ Bundler.require(*Rails.groups)
 
 module DummyRailsApp
   class Application < Rails::Application
+    RAILS_VERSION = ENV["RAILS_VERSION"] || 7.0
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults RAILS_VERSION
 
     # Configuration for the application, engines, and railties goes here.
     #
