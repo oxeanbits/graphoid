@@ -6,9 +6,9 @@ module Graphoid
 
     class << self
       def generate(model)
-        LIST[model] ||= GraphQL::InputObjectType.define do
+        LIST[model] ||= Class.new(GraphQL::Schema::InputObject) do
           name = Utils.graphqlize(model.name)
-          name("#{name}Input")
+          graphql_name("#{name}Input")
           description("Generated model input for #{name}")
 
           Attribute.fields_of(model).each do |field|
@@ -17,7 +17,7 @@ module Graphoid
             type = Graphoid::Mapper.convert(field)
             name = Utils.camelize(field.name)
 
-            argument(name, type)
+            argument(name, type, required: false)
           end
 
           Relation.relations_of(model).each do |name, relation|
@@ -31,9 +31,9 @@ module Graphoid
 
             r = Relation.new(relation)
             if r.many?
-              argument(name, -> { types[relation_input] })
+              argument(name, -> { [relation_input] }, required: false)
             else
-              argument(name, -> { relation_input })
+              argument(name, -> { relation_input }, required: false)
             end
           end
         end

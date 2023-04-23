@@ -1,31 +1,24 @@
-# frozen_string_literal: true
+source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-source 'https://rubygems.org'
-ruby '>= 2.7.0'
+ruby ">= 2.7.0"
 
-gemspec
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem 'activemodel'
+gem 'actionpack'
 
-#gem 'graphql', '~> 1.8.0'
-gem 'graphql', git: 'https://github.com/oxeanbits/graphql-ruby.git', branch: 'ruby3-1.8.18'
+gem "mongoid"
 
-gem 'nokogiri', '~> 1.13.9'
-
-gem 'activemodel', '>= 5.1'
-gem 'actionpack', '>= 6.0.1'
+# Use graphql gem for handle API
+gem 'graphql', "~> 2.0.21"
 
 group :development, :test do
-  gem 'byebug'
-  gem 'simplecov', require: false
-  gem 'pry-rails', '~> 0.3.4'
-
-  # Adds step-by-step debugging and stack navigation capabilities to pry using byebug.
-  gem 'pry-byebug'
+  gem "pry-byebug"
+  gem "rspec-rails"
 end
 
-group :test do
-  gem 'mongoid'
-  gem 'mongoid-rspec'
-  gem 'rspec'
-  gem 'rspec-rails', '>= 6.0'
-  gem 'sqlite3'
+group :development do
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"
 end
+

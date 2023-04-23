@@ -6,7 +6,7 @@ module Graphoid
       def self.execute(model, grapho, data, user)
         root_object = []
         operations = []
-        data.each { |key, value| operations << Operation.new(model, key, value) }
+        data.each { |key, value| operations << Operation.new(model, key, value, camelize: true) }
 
         operations.each do |operation|
           item = operation.operand.precreate(operation.value)

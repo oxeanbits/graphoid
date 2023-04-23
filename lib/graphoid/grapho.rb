@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 module Graphoid
   class Grapho
     attr_reader :name, :plural, :camel_name

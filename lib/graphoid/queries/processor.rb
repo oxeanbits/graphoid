@@ -5,7 +5,10 @@ module Graphoid
     module Processor
       class << self
         def execute(scope, object)
-          object.each { |key, value| scope = process(scope, value, key) }
+          object.each do |key, value|
+            key = key.to_s if key.is_a? Symbol
+            scope = process(scope, value, key)
+          end
           scope
         end
 
@@ -41,3 +44,4 @@ module Graphoid
     end
   end
 end
+

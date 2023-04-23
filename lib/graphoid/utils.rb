@@ -23,7 +23,7 @@ module Graphoid
       def children_of(selection)
         selection.scoped_children.values.first
       end
-      
+
       def first_children_of(selection)
         selection.scoped_children.values.first.values.first.scoped_children.values.first
       end
@@ -31,6 +31,8 @@ module Graphoid
       def underscore(props, fields = [])
         attrs = {}
         props.each do |key, value|
+          key = key.to_s if key.is_a? Symbol
+          key = key.camelize(:lower) if fields.exclude?(key)
           key = key.underscore if fields.exclude?(key)
           attrs[key] = value
         end

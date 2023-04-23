@@ -11,8 +11,8 @@ module Graphoid
       @camel_name = Utils.camelize(@name)
       @type = type
       @opts = opts
-    end    
-   
+    end
+
     def dynamic?
       @opts[:dynamic] == true
     end
@@ -60,6 +60,7 @@ module Graphoid
         result = {}
         fieldnames = fieldnames_of(model)
         attributes.each do |key, value|
+          key = key.to_s.camelize(:lower) if fieldnames.exclude?(key)
           key = key.to_s.underscore if fieldnames.exclude?(key.to_s)
           result[key] = value
         end

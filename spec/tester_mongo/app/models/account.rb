@@ -4,8 +4,6 @@ class Account
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  include Graphoid::Queries
-  include Graphoid::Mutations
   include Graphoid::Graphield
 
   graphield :graphield0, String

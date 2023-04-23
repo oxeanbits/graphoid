@@ -2,11 +2,12 @@
 
 module Graphoid
   module Queries
-    extend ActiveSupport::Concern
+    def self.generate(*models)
+      models.each { |model| Graphoid::Queries.build(model) }
+    end
 
-    included do
+    def self.build(model)
       Graphoid.initialize
-      model = self
       grapho = Graphoid.build(model)
       query_type = ::Types::QueryType
 
@@ -19,11 +20,13 @@ module Graphoid
         Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
       end
 
-      query_type.field name: "x_meta_#{grapho.plural}", type: Graphoid::Types::Meta, null: true do
-        Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
-      end
-
       query_type.class_eval do
+        # Dynamically defining a resolver method for queries:
+        # query {
+        # project(id: "5e7b5b9b0b0b0b0b0b0b0b0b", where: { name_regex: "[a-z]" }) {
+        #  id
+        #  name
+        # }
         define_method :"#{grapho.name}" do |id: nil, where: nil|
           begin
             return model.find(id) if id
@@ -35,9 +38,19 @@ module Graphoid
       end
 
       query_type.class_eval do
+        # Dynamically defining a resolver method for queries:
+        # query {
+        #  projects(where: { name_contains: "a" }, order: { name: ASC }, limit: 10, skip: 10) {
+        #    id
+        #    name
+        # }
         define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
           begin
-            model = Graphoid.driver.eager_load(context.irep_node, model)
+            # irep_node is deprecated
+            # maybe use context.ast_node instead
+            # but the problem is that it is not the same
+            # model = Graphoid.driver.eager_load(context.irep_node, model)
+            # https://graphql-ruby.org/fields/introduction.html#extra-field-metadata
             result = Processor.execute(model, where.to_h)
             order = Processor.parse_order(model, order.to_h)
             result = result.order(order).limit(limit)
@@ -46,9 +59,8 @@ module Graphoid
             GraphQL::ExecutionError.new(ex.message)
           end
         end
-
-        alias_method :"x_meta_#{grapho.plural}", :"#{grapho.plural}"
       end
     end
   end
 end
+

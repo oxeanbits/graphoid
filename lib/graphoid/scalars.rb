@@ -1,96 +1,103 @@
 # frozen_string_literal: true
 
 module Graphoid
-  module Upload
-  end
-
   module Scalars
     class << self
       def generate
-        Graphoid::Scalars::DateTime ||= GraphQL::ScalarType.define do
-          name 'DateTime'
+        Graphoid::Scalars::DateTime ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'DateTime'
           description 'DateTime ISO8601 formated'
 
-          coerce_input lambda { |value, _|
+          def self.coerce_input(value, _ctx)
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
               GraphQL::ExecutionError.new(ex)
             end
-          }
+          end
         end
 
-        Graphoid::Scalars::Date ||= GraphQL::ScalarType.define do
-          name 'Date'
+        Graphoid::Scalars::Date ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Date'
           description 'Date ISO8601 formated'
 
-          coerce_input lambda { |value, _|
+          def self.coerce_input(value, _ctx)
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
               GraphQL::ExecutionError.new(ex)
             end
-          }
+          end
         end
 
-        Graphoid::Scalars::Time ||= GraphQL::ScalarType.define do
-          name 'Time'
+        Graphoid::Scalars::Time ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Time'
           description 'Time ISO8601 formated'
 
-          coerce_input lambda { |value, _|
+          def self.coerce_input(value, _ctx)
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
               GraphQL::ExecutionError.new(ex)
             end
-          }
+          end
         end
 
-        Graphoid::Scalars::Timestamp ||= GraphQL::ScalarType.define do
-          name 'Timestamp'
+        Graphoid::Scalars::Timestamp ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Timestamp'
           description 'Second elapsed since 1970-01-01'
 
-          coerce_input lambda { |value, _|
+          def self.coerce_input(value, _ctx)
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
               GraphQL::ExecutionError.new(ex)
             end
-          }
+          end
         end
 
-        Graphoid::Scalars::Text ||= GraphQL::ScalarType.define do
-          name 'Text'
-          description 'Should be string? explain this please.'
+        Graphoid::Scalars::Text ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Text'
+          description 'Text scalar'
         end
 
-        Graphoid::Scalars::BigInt ||= GraphQL::ScalarType.define do
-          name 'BigInt'
-          description 'WTF ??'
+        Graphoid::Scalars::BigInt ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'BigInt'
+          description 'BigInt scalar'
+
+          def self.coerce_input(value, _ctx)
+            begin
+              value.to_i
+            rescue Exception => ex
+              GraphQL::ExecutionError.new(ex)
+            end
+          end
         end
 
-        Graphoid::Scalars::Decimal ||= GraphQL::ScalarType.define do
-          name 'Decimal'
-          description 'Define pliiiizzzzzzz'
+        Graphoid::Scalars::Decimal ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Decimal'
+          description 'Decimal scalar'
         end
 
-        Graphoid::Scalars::Hash ||= GraphQL::ScalarType.define do
-          name 'Hash'
+        Graphoid::Scalars::Hash ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Hash'
           description 'Hash scalar'
 
-          def self.coerce_input(input_value, _context)
+          def self.coerce_input(input_value, _ctx)
             input_value.to_h
           rescue StandardError
             raise GraphQL::CoercionError, "#{input_value.inspect} is not a valid Hash"
           end
 
-          def self.coerce_result(ruby_value, _context)
+          def self.coerce_result(ruby_value, _ctx)
             ruby_value.to_h
+          rescue StandardError
+            raise GraphQL::CoercionError, "#{ruby_value.inspect} is not a valid Hash"
           end
         end
 
-        Graphoid::Scalars::Array ||= GraphQL::ScalarType.define do
-          name 'Array'
+        Graphoid::Scalars::Array ||= Class.new(GraphQL::Schema::Scalar) do
+          graphql_name 'Array'
           description 'Array scalar'
         end
       end
