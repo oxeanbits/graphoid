@@ -17,7 +17,7 @@ gem "puma", "~> 5.0"
 # Use graphql gem for handle API
 gem 'graphql', "~> 2.0.21"
 
-gem 'graphoid', path: "../../"
+gem 'graphoid', path: "../../", require: 'graphoid/graphoid'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"

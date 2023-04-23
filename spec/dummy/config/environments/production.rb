@@ -10,6 +10,7 @@ Rails.application.configure do
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
+  # eager loading is not working with graphoid
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
