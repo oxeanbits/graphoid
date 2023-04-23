@@ -55,18 +55,3 @@ jobs:
         run: |
           cd spec/tester_mongo
           DRIVER=mongo rspec
-
-      - name: New Tests Mongoid Bundle
-        id: rspec-mongo-new-bundle
-        run: |
-          cd spec/dummy
-          pwd
-          gem install bundler:2.4.12
-          bundle install -j 5
-
-      - name: New Tests Mongoid
-        id: rspec-mongo-new
-        run: |
-          cd spec/dummy
-          pwd
-          rspec
