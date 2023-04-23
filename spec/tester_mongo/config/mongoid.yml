@@ -1,13 +1,13 @@
 development:
   clients:
     default:
-      database: digitalize
+      database: graphoid
       hosts:
         - localhost:27017
 
 test:
   clients:
     default:
-      database: digitalize_test
+      database: graphoid_test
       hosts:
         - localhost:27017
