@@ -23,11 +23,13 @@ http://127.0.0.1:3000/graphiql
 - [x] overcoming circular dependency on types (used string types declaration)
 - [x] query with nested fields on where projects(where: { example: { text: "test" } }) { }
 - [x] query with nested fields on result and where projects { examples(where: ...) { text } }
+- [x] query with some, none and every operators projects { examples(where: { field_some: ...}) { text } }
 - [x] Improve initialization and module enabling on models
 - [x] enable graphields
 - [x] enable graphorbid
 - [x] tests
 - [x] require all files upfront
+- [ ] support Rails.appplication.eager_load!
 
 
 # Working without crashes but no native eager load
