@@ -1,11 +1,10 @@
-
 <img src="https://cl.ly/aeaacddab2e2/graphoid.png" height="150" alt="graphoid"/>
 
 [![CI](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/oxeanbits/graphoid/actions/workflows/build.yml)
 [![Gem Version](https://img.shields.io/badge/gem%20version-0.2.0-green)](https://rubygems.org/gems/graphoid)
 [![Maintainability](https://api.codeclimate.com/v1/badges/96505308310ca4e7e241/maintainability)](https://codeclimate.com/github/maxiperezc/graphoid/maintainability)
 
-Generates a full GraphQL API using introspection of Mongoid or ActiveRecord models.
+Generates a full GraphQL API using introspection of Mongoid models.
 
 ## API Documentation
 The [API Documentation](https://maxcoto.github.io/graphoid/) that displays how to use the queries and mutations that Graphoid automatically generates.
@@ -19,36 +18,35 @@ Please install that gem first before continuing
 Add this line to your Gemfile:
 
 ```ruby
-gem 'graphoid', git: 'https://github.com/oxeanbits/graphoid.git', tag: '0.2.0'
+gem 'graphoid', git: 'https://github.com/oxeanbits/graphoid.git', tag: '1.0.0'
 ```
 
 ```bash
 $ bundle install
 ```
 
-## Database
-Create the file `config/initializers/graphoid.rb`
-And configure the database you want to use in it (:mongoid or :active_record)
-
-```ruby
-Graphoid.configure do |config|
-  config.driver = :mongoid
-end
-```
-
 ## Usage
-You can determine which models will be visible in the API by including the Graphoid Queries and Mutations concerns
+
+Create the file `config/initializers/graphoid.rb` and determine which models will be visible in the
+API by select the models to generate Types, Queries and Mutations.
 
 ```ruby
-class Person
-  include Graphoid::Queries
-  include Graphoid::Mutations
+Rails.application.config.after_initialize do
+  Graphoid.configure do |config|
+    config.driver = :mongoid
+  end
+
+  Graphoid.initialize
+  Graphoid::Types.initialize(User, Contract)
+  Graphoid::Queries.generate(User, Contract)
+  Graphoid::Mutations.generate(User, Contract)
 end
 ```
 
 ## Examples
-You can find an example that uses ActiveRecord in the [Tester AR folder](https://github.com/maxiperezc/graphoid/tree/master/spec/tester_ar)  
-And an example with Mongoid in the [Tester Mongo folder](https://github.com/maxiperezc/graphoid/tree/master/spec/tester_mongo)  
+
+And an example with Mongoid in the
+[Tester Mongo folder](https://github.com/oxeanbits/graphoid/tree/master/spec/tester_mongo)
 In this same repository.
 
 
@@ -70,7 +68,7 @@ In this same repository.
 
 ## Testing
 ```bash
-$ DRIVER=ar DEBUG=true bundle exec rspec
+$ cd spec/tester_mongo
 $ DRIVER=mongo DEBUG=true bundle exec rspec
 ```
 
