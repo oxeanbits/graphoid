@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
 
   gem.files = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  gem.required_ruby_version = '>= 3.2.0'
+  gem.required_ruby_version = '>= 2.7.0'
 
   gem.add_dependency 'graphql', '~> 2.0.21'
   gem.add_dependency 'rails', '>= 6.0'
