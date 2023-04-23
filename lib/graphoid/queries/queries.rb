@@ -20,6 +20,11 @@ module Graphoid
         Graphoid::Argument.query_many(self, grapho.filter, grapho.order, required: false)
       end
 
+      Graphoid::Queries.define_resolvers(query_type, model, grapho.name, grapho)
+
+    end
+
+    def self.define_resolvers(query_type, model, name, grapho)
       query_type.class_eval do
         # Dynamically defining a resolver method for queries:
         # query {
@@ -63,4 +68,3 @@ module Graphoid
     end
   end
 end
-

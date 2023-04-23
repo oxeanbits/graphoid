@@ -63,46 +63,7 @@ module Graphoid
         argument :skip,  GraphQL::Types::Int, required: false
       end
 
-      query_type.class_eval do
-        # Dynamically defining a resolver method for queries:
-        # query {
-        # project(id: "5e7b5b9b0b0b0b0b0b0b0b0b", where: { name_regex: "[a-z]" }) {
-        #  id
-        #  name
-        # }
-        define_method :"#{grapho.name}" do |id: nil, where: nil|
-          begin
-            return model.find(id) if id
-            Graphoid::Queries::Processor.execute(model, where.to_h).first
-          rescue Exception => ex
-            GraphQL::ExecutionError.new(ex.message)
-          end
-        end
-      end
-
-      query_type.class_eval do
-        # Dynamically defining a resolver method for queries:
-        # query {
-        #  projects(where: { name_contains: "a" }, order: { name: ASC }, limit: 10, skip: 10) {
-        #    id
-        #    name
-        # }
-        define_method :"#{grapho.plural}" do |where: nil, order: nil, limit: nil, skip: nil|
-          begin
-            # irep_node is deprecated
-            # maybe use context.ast_node instead
-            # but the problem is that it is not the same
-            # model = Graphoid.driver.eager_load(context.irep_node, model)
-            # https://graphql-ruby.org/fields/introduction.html#extra-field-metadata
-            result = Graphoid::Queries::Processor.execute(model, where.to_h)
-            order = Graphoid::Queries::Processor.parse_order(model, order.to_h)
-            result = result.order(order).limit(limit)
-            Graphoid.driver.skip(result, skip)
-          rescue Exception => ex
-            GraphQL::ExecutionError.new(ex.message)
-          end
-        end
-      end
+      Graphoid::Queries.define_resolvers(query_type, model, grapho.name, grapho)
     end
   end
 end
