@@ -59,6 +59,8 @@ module Graphoid
           Graphoid::Types::const_set(sorter_const, Class.new(GraphQL::Schema::InputObject))
           #Graphoid::Types::const_set(input_const, Class.new(GraphQL::Schema::InputObject))
         end
+
+        models.each { |model| Graphoid.build(model) }
       end
 
       def generate(model)
