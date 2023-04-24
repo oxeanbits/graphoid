@@ -5,6 +5,4 @@ class Level
   include Mongoid::Timestamps
 
   field :name, type: String
-
-  has_many :accounts, dependent: :destroy
 end
