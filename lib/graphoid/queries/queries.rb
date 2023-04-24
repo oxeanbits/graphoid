@@ -34,6 +34,7 @@ module Graphoid
         # }
         define_method :"#{grapho.name}" do |id: nil, where: nil|
           begin
+              return model.resolve_one(self, id, where) if model.respond_to?(:resolve_one)
             return model.find(id) if id
             Processor.execute(model, where.to_h).first
           rescue Exception => ex
@@ -56,6 +57,10 @@ module Graphoid
             # but the problem is that it is not the same
             # model = Graphoid.driver.eager_load(context.irep_node, model)
             # https://graphql-ruby.org/fields/introduction.html#extra-field-metadata
+            if model.respond_to?(:resolve_many)
+              return model.resolve_many(self, where, order, limit, skip)
+            end
+
             result = Processor.execute(model, where.to_h)
             order = Processor.parse_order(model, order.to_h)
             result = result.order(order).limit(limit)
