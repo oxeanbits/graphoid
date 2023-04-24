@@ -48,7 +48,7 @@ module Graphoid
         def pages
           return 1 if object.options[:limit].nil?
 
-          (object.count / object.options[:limit]) + 1
+          (object.count / object.options[:limit].to_f).ceil
         end
       end
 

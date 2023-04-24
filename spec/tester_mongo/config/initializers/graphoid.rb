@@ -6,8 +6,8 @@ Rails.application.config.after_initialize do
   end
 
   Graphoid.initialize
-  Graphoid::Types.initialize(User, House, Label, Snake, Value, Person, Account, Contract)
-  Graphoid::Queries.generate(House, Label, Snake, Value, Person, Account, Contract)
-  Graphoid::Queries::Pagination.generate(User)
+  Graphoid::Types.initialize(User, House, Label, Snake, Value, Person, Account, Contract, Level)
+  Graphoid::Queries.generate(User, House, Label, Snake, Value, Person, Account, Contract)
   Graphoid::Mutations.generate(User, House, Label, Snake, Value, Person, Account, Contract)
+  Graphoid::Queries::Pagination.generate(Level)
 end
