@@ -47,6 +47,10 @@ module Graphoid
 
       relation = relations.find { |r| r.name == key.underscore.to_sym }
       return Graphoid.driver.class_of(relation).new(relation) if relation
+
+      if model.include? Mongoid::Attributes::Dynamic
+        return Attribute.new(name: key, type: @value.class) unless @value.nil?
+      end
     end
   end
 end
