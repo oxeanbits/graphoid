@@ -19,6 +19,7 @@ module Graphoid
           define_method :"#{name}" do |data: {}|
             begin
               user = context[:current_user]
+              model.before_resolve_create(self) if model.respond_to?(:before_resolve_create)
               Graphoid::Mutations::Processor.execute(model, grapho, data, user)
             rescue Exception => ex
               GraphQL::ExecutionError.new(ex.message)
