@@ -28,9 +28,14 @@ module Graphoid
         field :page_size, GraphQL::Types::Int, null: true
         field :pages, GraphQL::Types::Int, null: true
         field :skip, GraphQL::Types::Int, null: true
-        field :data, [grapho.type], null: true
+        field :data, [grapho.type], null: true, extras: [:lookahead]
 
-        def data
+        def data(lookahead:)
+          # Mongoid::Criteria uses method_missing to send the method to the underlying Model
+          # Just implement def self.lookahead(object, lookahead) in your model to manage
+          # eager loading
+          obj = object.lookahead(object, lookahead) if object.respond_to? :lookahead
+          object = obj if obj
           return object.eager_load if object.respond_to? :eager_load
           object
         end
