@@ -42,6 +42,10 @@ module Graphoid
               transformed
             end
           end
+
+          if value.is_a? GraphQL::Schema::InputObject
+            value = value.to_h
+          end
           attrs[key] = value
         end
         attrs
