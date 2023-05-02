@@ -31,6 +31,7 @@ module Graphoid
         field :data, [grapho.type], null: true, extras: [:lookahead]
 
         def data(lookahead:)
+          object ||= @object
           # Mongoid::Criteria uses method_missing to send the method to the underlying Model
           # Just implement def self.lookahead(object, lookahead) in your model to manage
           # eager loading
