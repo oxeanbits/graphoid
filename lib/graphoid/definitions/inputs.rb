@@ -12,10 +12,13 @@ module Graphoid
           description("Generated model input for #{name}")
 
           Attribute.fields_of(model).each do |field|
-            next if field.name.start_with?('_')
+            next if field.name.start_with?('_') and not field.name == '_id'
+
+            name = field.name
+            name = 'id' if name == '_id'
 
             type = Graphoid::Mapper.convert(field)
-            name = Utils.camelize(field.name)
+            name = Utils.camelize(name)
 
             argument(name, type, required: false)
           end
