@@ -21,9 +21,11 @@ module Graphoid
             begin
               user = context[:current_user]
 
-              objects = model
-              objects = model.resolve_filter(self, model) if model.respond_to?(:resolve_filter)
-              object = objects.where(where).first
+              object = if model.respond_to?(:resolve_one)
+                          model.resolve_one(self, nil, where)
+                        else
+                          model.where(where).first
+                        end
 
               if object
                 attrs = Utils.build_update_attributes(data, model, context)
