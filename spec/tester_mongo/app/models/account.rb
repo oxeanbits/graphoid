@@ -59,7 +59,14 @@ class Account
     data
   end
 
-  def self.resolve_find(model, id)
+  def self.resolve_find(resolver, id)
     where.not(string_field: 'hook').find(id)
+  end
+
+  def self.resolve_one(resolver, id, filter)
+    result = where.not(string_field: 'hook')
+    result = Graphoid::Queries::Processor.execute(result, filter.to_h)
+    return result.find(id) if id
+    result.first
   end
 end

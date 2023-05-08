@@ -34,7 +34,7 @@ module Graphoid
         # }
         define_method :"#{grapho.name}" do |id: nil, where: nil|
           begin
-              return model.resolve_one(self, id, where) if model.respond_to?(:resolve_one)
+            return model.resolve_one(self, id, where) if model.respond_to?(:resolve_one)
             return model.find(id) if id
             Processor.execute(model, where.to_h).first
           rescue Exception => ex
