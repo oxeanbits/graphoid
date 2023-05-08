@@ -58,4 +58,8 @@ class Account
 
     data
   end
+
+  def self.resolve_find(model, id)
+    where.not(string_field: 'hook').find(id)
+  end
 end
