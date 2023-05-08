@@ -48,4 +48,14 @@ class Account
 
   embeds_one :value
   embeds_many :snakes
+
+  def self.before_resolve_create(model, data)
+    if data[:string_field] == 'hook'
+      data = data.to_h
+      data[:string_field] = 'hook_changed'
+      return data
+    end
+
+    data
+  end
 end
