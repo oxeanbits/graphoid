@@ -19,7 +19,7 @@ describe 'MutationCreateNested', type: :request do
           person {
             id
           }
-          labels {
+          snakes {
             id
           }
         }
