@@ -13,6 +13,7 @@ describe 'MutationCreateNested', type: :request do
           stringField: "bob",
           person: { name: "Bryan" },
           snakes: [{ name: "a", camelCase: 1 }, { name: "b", camelCase: 2 }],
+          value: { text: "a", name: "b", valueNested: [{ text: "c", name: "d" }] }
           house: { name: "Alesi" }
         }) {
           id
