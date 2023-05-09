@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-class Value
+class ValueNested
   include Mongoid::Document
   include Mongoid::Timestamps
 
   field :text, type: String
   field :name, type: String
 
-  embeds_many :value_nested
-  embedded_in :account
+  embedded_in :value
 end

@@ -57,14 +57,8 @@ module Graphoid
       end
 
       def correct(model, attributes)
-        result = {}
         fieldnames = fieldnames_of(model)
-        attributes.each do |key, value|
-          key = key.to_s.camelize(:lower) if fieldnames.exclude?(key)
-          key = key.to_s.underscore if fieldnames.exclude?(key.to_s)
-          result[key] = value
-        end
-        result
+        Utils.underscore(attributes, fieldnames)
       end
     end
   end
