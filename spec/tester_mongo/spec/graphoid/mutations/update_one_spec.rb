@@ -50,4 +50,58 @@ describe 'MutationUpdateOne', type: :request do
     persisted = Account.find(subject['id'])
     expect(persisted.updated_by.name).to eq('maxi')
   end
+
+  it 'updates and sets updated_by if exists' do
+    @action = 'updateAccount'
+
+    @query = %{
+      mutation {
+        updateAccount(id: "#{account.id}", data: {
+          integerField: 5
+        }) {
+          id
+        }
+      }
+    }
+
+    persisted = Account.find(subject['id'])
+    expect(persisted.updated_by.name).to eq('maxi')
+  end
+
+  describe 'intercepting the updated object' do
+    it 'updates the right object' do
+      @action = 'updateAccount'
+
+      @query = %{
+        mutation {
+          updateAccount(id: "#{account.id}", data: {
+            integerField: 5
+          }) {
+            id
+          }
+        }
+      }
+
+      persisted = Account.find(subject['id'])
+      expect(persisted.updated_by.name).to eq('maxi')
+    end
+
+    it 'it blocks an update' do
+      account.set(string_field: 'hook')
+
+      @action = 'updateAccount'
+
+      @query = %{
+        mutation {
+          updateAccount(id: "#{account.id}", data: {
+            integerField: 5
+          }) {
+            id
+          }
+        }
+      }
+
+      expect(subject).to be_nil
+    end
+  end
 end

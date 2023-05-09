@@ -13,7 +13,7 @@ describe 'QueryFieldTypes', type: :request do
   it 'loads one object by id' do
     @query = %{
       query {
-        account(id: "#{a0.id}" ){
+        account(id: "#{a0.id}"){
           id
           integerField
           floatField
@@ -39,12 +39,27 @@ describe 'QueryFieldTypes', type: :request do
   it 'loads one object by condition' do
     @query = %{
       query {
-        account(where: { stringField_contains: "bobi" } ){
+        account(where: { stringField_contains: "bobi" }){
           id
         }
       }
     }
 
     expect(subject['id']).to eq(a1.id.to_s)
+  end
+
+  it 'filter the object by intercepting using resolve_one' do
+    a0.set(string_field: 'hook')
+
+    @query = %{
+      query {
+        account(where: { integerField: 4 }){
+          id
+        }
+      }
+    }
+    post '/graphql', params: { query: @query }
+
+    expect(JSON.parse(body)).to match({ 'data' => { 'account' => nil }})
   end
 end

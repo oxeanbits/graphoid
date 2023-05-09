@@ -34,6 +34,18 @@ module Graphoid
           key = key.to_s if key.is_a? Symbol
           key = key.camelize(:lower) if fields.exclude?(key)
           key = key.underscore if fields.exclude?(key)
+          # embeds many is passing on update action an array of dynamic object like hash
+          if value.is_a? Array
+            value = value.map do |v|
+              transformed = v
+              transformed = v.to_h if v.respond_to?(:to_h)
+              transformed
+            end
+          end
+
+          if value.is_a? GraphQL::Schema::InputObject
+            value = value.to_h
+          end
           attrs[key] = value
         end
         attrs
