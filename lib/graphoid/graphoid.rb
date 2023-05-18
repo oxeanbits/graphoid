@@ -23,6 +23,7 @@ require 'graphoid/queries/processor'
 require 'graphoid/queries/operation'
 
 require 'graphoid/mutations/create'
+require 'graphoid/mutations/create_or_update'
 require 'graphoid/mutations/update'
 require 'graphoid/mutations/delete'
 require 'graphoid/mutations/processor'

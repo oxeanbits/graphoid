@@ -17,7 +17,7 @@ module Graphoid
       end
 
       def symbolize(fields)
-        fields.keys.map { |f| f.underscore.to_sym  }
+        fields.keys.map { |f| f.underscore.to_sym }
       end
 
       def children_of(selection)

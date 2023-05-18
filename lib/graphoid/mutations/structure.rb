@@ -8,6 +8,7 @@ module Graphoid
 
     def self.build(model)
       Graphoid::Mutations::Create.build(model)
+      Graphoid::Mutations::CreateOrUpdate.build(model)
       Graphoid::Mutations::Update.build(model)
       Graphoid::Mutations::Delete.build(model)
     end
