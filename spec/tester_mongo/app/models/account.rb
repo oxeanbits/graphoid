@@ -48,4 +48,25 @@ class Account
 
   embeds_one :value
   embeds_many :snakes
+
+  def self.before_resolve_create(model, data)
+    if data[:string_field] == 'hook'
+      data = data.to_h
+      data[:string_field] = 'hook_changed'
+      return data
+    end
+
+    data
+  end
+
+  def self.resolve_find(resolver, id)
+    where.not(string_field: 'hook').find(id)
+  end
+
+  def self.resolve_one(resolver, id, filter)
+    result = where.not(string_field: 'hook')
+    result = Graphoid::Queries::Processor.execute(result, filter.to_h)
+    return result.find(id) if id
+    result.first
+  end
 end

@@ -51,4 +51,21 @@ describe 'MutationCreateOne', type: :request do
     expect(persisted.created_by.name).to eq('maxi')
     expect(persisted.updated_by.name).to eq('maxi')
   end
+
+  it 'change fields using the before_resolve_create hook' do
+    @action = 'createAccount'
+
+    @query = %{
+      mutation {
+        createAccount(data: {
+          stringField: "hook"
+        }) {
+          id
+        }
+      }
+    }
+
+    persisted = Account.find(subject['id'])
+    expect(persisted.string_field).to eq('hook_changed')
+  end
 end

@@ -13,7 +13,7 @@ module Graphoid
 
         type.field(name: name, type: grapho.type, null: true) do
           argument :where, grapho.filter, required: true
-          argument :data, grapho.input, required: false
+          argument :data, grapho.input, required: true
         end
 
         type.class_eval do
