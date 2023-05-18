@@ -22,9 +22,9 @@ module Graphoid
               user = context[:current_user]
 
               object = if model.respond_to?(:resolve_one)
-                          model.resolve_one(self, nil, where)
+                          model.resolve_one(self, nil, where.to_h)
                         else
-                          model.where(where).first
+                          model.where(where.to_h).first
                         end
 
               if object
