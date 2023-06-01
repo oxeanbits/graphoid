@@ -130,7 +130,7 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
-    puma (5.6.5)
+    puma (6.3.0)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.7)
@@ -212,7 +212,7 @@ DEPENDENCIES
   graphql (~> 2.0.21)
   mongoid
   pry-byebug
-  puma (~> 5.0)
+  puma (~> 6.3)
   rails (~> 6.1.0)
   rspec-rails
   sqlite3 (~> 1.4)
