@@ -54,7 +54,7 @@ jobs:
         id: rspec-rails7
         run: |
           cd spec/tester_mongo
-          RAILS_VERSION=7.0 DRIVER=mongo rspec
+          RAILS_VERSION=7.0 DRIVER=mongo bundle exec rspec
 
       - name: Rails 6.1 Tests Mongoid Bundle
         id: rspec-mongo-rails-6-bundle
@@ -67,4 +67,4 @@ jobs:
         id: rspec-rails-6
         run: |
           cd spec/tester_mongo_rails_6
-          RAILS_VERSION=6.1 DRIVER=mongo rspec
+          RAILS_VERSION=6.1 DRIVER=mongo bundle exec rspec
