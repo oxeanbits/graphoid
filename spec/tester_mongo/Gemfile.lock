@@ -94,7 +94,7 @@ GEM
       railties
       sprockets-rails
     graphql (2.0.22)
-    i18n (1.13.0)
+    i18n (1.14.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     irb (1.6.4)
