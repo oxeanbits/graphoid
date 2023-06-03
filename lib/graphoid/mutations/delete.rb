@@ -24,8 +24,8 @@ module Graphoid
         type.class_eval do
           define_method :"#{name}" do |id:|
             begin
-              result = if model.respond_to?(:resolve_find)
-                         model.resolve_find(self, id)
+              result = if model.respond_to?(:resolve_find_before_delete)
+                         model.resolve_find_before_delete(self, id)
                        else
                          model.find(id)
                        end
