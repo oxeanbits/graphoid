@@ -117,7 +117,7 @@ GEM
       activemodel (>= 5.1, < 7.1, != 7.0.0)
       mongo (>= 2.18.0, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
-    msgpack (1.7.0)
+    msgpack (1.7.1)
     net-imap (0.3.4)
       date
       net-protocol
