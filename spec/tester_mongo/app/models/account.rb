@@ -59,7 +59,11 @@ class Account
     data
   end
 
-  def self.resolve_find(resolver, id)
+  def self.resolve_find_before_update(resolver, id)
+    where.not(string_field: 'hook').find(id)
+  end
+
+  def self.resolve_find_before_delete(resolver, id)
     where.not(string_field: 'hook').find(id)
   end
 

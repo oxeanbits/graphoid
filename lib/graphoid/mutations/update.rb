@@ -28,8 +28,8 @@ module Graphoid
             attrs = Utils.build_update_attributes(data, model, context)
 
             begin
-              object = if model.respond_to?(:resolve_find)
-                         model.resolve_find(self, id)
+              object = if model.respond_to?(:resolve_find_before_update)
+                         model.resolve_find_before_update(self, id)
                        else
                          model.find(id)
                        end
