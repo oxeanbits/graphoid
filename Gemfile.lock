@@ -85,7 +85,7 @@ GEM
       rspec-expectations (~> 3.12)
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
-    rspec-support (3.12.0)
+    rspec-support (3.12.1)
     ruby2_keywords (0.0.5)
     thor (1.2.2)
     tzinfo (2.0.6)
