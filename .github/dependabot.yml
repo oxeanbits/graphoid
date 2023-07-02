@@ -26,6 +26,9 @@ updates:
       interval: "daily"
     allow:
       - dependency-type: "all"
+    ignore:
+      - dependency-name: "rails"
+        update-types: ["version-update:semver-major"]
     labels:
       - "dependencies"
       - "ruby"
