@@ -44,7 +44,7 @@ GEM
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
-    nokogiri (1.15.2-x86_64-linux)
+    nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     pry (0.14.2)
       coderay (~> 1.1)
