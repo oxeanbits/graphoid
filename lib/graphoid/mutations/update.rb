@@ -46,6 +46,7 @@ module Graphoid
             attrs = Utils.build_update_attributes(data, model, context)
 
             begin
+              model.authorize_many!(context[:current_user]) if model.respond_to?(:authorize_many!)
               objects = Graphoid::Queries::Processor.execute(model, where.to_h)
               objects.update_all(attrs)
               objects.all.to_a

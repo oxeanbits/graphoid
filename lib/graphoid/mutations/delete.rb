@@ -40,6 +40,7 @@ module Graphoid
         type.class_eval do
           define_method :"#{plural}" do |where: {}|
             begin
+              model.authorize_many!(context[:current_user]) if model.respond_to?(:authorize_many!)
               objects = Graphoid::Queries::Processor.execute(model, where.to_h)
               objects = model.resolve_filter(self, objects) if model.respond_to?(:resolve_filter)
               objects.destroy_all
