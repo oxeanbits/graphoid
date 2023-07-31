@@ -22,6 +22,8 @@ describe 'MutationUpdateMany', type: :request do
 
     expect(subject[0]['camelCase']).to eq('updated')
     expect(subject[1]['camelCase']).to eq('updated')
+    expect(a0.reload.camelCase).to eq('updated')
+    expect(a1.reload.camelCase).to eq('updated')
     expect(a2.reload.camelCase).to eq('camel')
   end
 end
