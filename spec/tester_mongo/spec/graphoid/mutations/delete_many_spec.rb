@@ -40,6 +40,14 @@ describe 'MutationDeleteMany', type: :request do
       @result = Helper.resolve(self, 'deleteManyAccounts', query('edimar'))
     end
 
+    after do
+      Account.class_eval do
+        def self.resolve_filter(resolver, result)
+          result
+        end
+      end
+    end
+
     it 'should block the operation' do
       expect(response.body).to include('User has insufficient privileges for this operation')
     end

@@ -48,7 +48,6 @@ module Graphoid
             begin
               objects = Graphoid::Queries::Processor.execute(model, where.to_h)
               objects = model.resolve_filter(self, objects) if model.respond_to?(:resolve_filter)
-              raise objects if objects.is_a? GraphQL::ExecutionError
               objects.update_all(attrs)
               objects.all.to_a
             rescue Exception => ex
