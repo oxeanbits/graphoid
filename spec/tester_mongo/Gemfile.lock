@@ -120,7 +120,7 @@ GEM
       mongo (>= 2.18.0, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
     msgpack (1.7.2)
-    net-imap (0.4.0)
+    net-imap (0.4.1)
       date
       net-protocol
     net-pop (0.1.2)
