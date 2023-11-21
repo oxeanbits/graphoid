@@ -63,7 +63,7 @@ GEM
       mongo (>= 2.18.0, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
     mutex_m (0.2.0)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
     pry (0.14.2)
       coderay (~> 1.1)
