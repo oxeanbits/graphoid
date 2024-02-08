@@ -42,7 +42,7 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
-    graphql (2.2.7)
+    graphql (2.2.8)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -132,7 +132,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack
   activemodel
-  graphql (~> 2.2.7)
+  graphql (~> 2.2.8)
   mongoid
   pry-byebug
   rspec-rails
