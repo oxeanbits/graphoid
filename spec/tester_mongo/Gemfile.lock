@@ -107,7 +107,7 @@ GEM
     graphiql-rails (1.9.0)
       railties
       sprockets-rails
-    graphql (2.2.8)
+    graphql (2.2.9)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -246,7 +246,7 @@ DEPENDENCIES
   debug
   graphiql-rails
   graphoid!
-  graphql (~> 2.2.8)
+  graphql (~> 2.2.9)
   mongoid
   pry-byebug
   puma (~> 6.4)
