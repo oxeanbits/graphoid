@@ -17,6 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 2.7.0'
 
-  gem.add_dependency 'graphql', '>= 2.0.21', '< 2.3.0'
+  gem.add_dependency 'graphql', '>= 2.0.21', '< 2.4.0'
   gem.add_dependency 'rails', '>= 6.0'
 end
