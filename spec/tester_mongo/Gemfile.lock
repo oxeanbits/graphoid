@@ -101,12 +101,14 @@ GEM
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.13.0)
+    fiber-storage (0.1.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     graphiql-rails (1.10.0)
       railties
-    graphql (2.3.10)
+    graphql (2.3.12)
       base64
+      fiber-storage
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -236,7 +238,7 @@ DEPENDENCIES
   debug
   graphiql-rails
   graphoid!
-  graphql (~> 2.3.10)
+  graphql (~> 2.3.12)
   mongoid
   pry-byebug
   puma (~> 6.4)
