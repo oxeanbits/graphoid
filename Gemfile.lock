@@ -67,7 +67,7 @@ GEM
       activemodel (>= 5.1, < 8.1, != 7.0.0)
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
-    mutex_m (0.2.0)
+    mutex_m (0.3.0)
     nokogiri (1.15.6-x86_64-linux)
       racc (~> 1.4)
     pry (0.14.2)
