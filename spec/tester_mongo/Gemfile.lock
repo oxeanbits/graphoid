@@ -104,7 +104,7 @@ GEM
       reline (>= 0.3.8)
     diff-lcs (1.5.1)
     drb (2.2.1)
-    erubi (1.13.0)
+    erubi (1.13.1)
     fiber-storage (1.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
