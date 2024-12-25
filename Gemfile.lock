@@ -34,7 +34,7 @@ GEM
       tzinfo (~> 2.0)
     base64 (0.2.0)
     benchmark (0.4.0)
-    bigdecimal (3.1.8)
+    bigdecimal (3.1.9)
     bson (5.0.2)
     builder (3.3.0)
     byebug (11.1.3)
