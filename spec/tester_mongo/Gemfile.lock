@@ -110,9 +110,10 @@ GEM
       activesupport (>= 6.1)
     graphiql-rails (1.10.1)
       railties
-    graphql (2.4.8)
+    graphql (2.4.9)
       base64
       fiber-storage
+      logger
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
@@ -249,7 +250,7 @@ DEPENDENCIES
   debug
   graphiql-rails
   graphoid!
-  graphql (~> 2.4.8)
+  graphql (~> 2.4.9)
   mongoid
   pry-byebug
   puma (~> 6.6)
