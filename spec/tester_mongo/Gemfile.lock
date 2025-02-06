@@ -140,7 +140,7 @@ GEM
       activemodel (>= 5.1, < 8.1, != 7.0.0)
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
-    msgpack (1.7.5)
+    msgpack (1.8.0)
     mutex_m (0.3.0)
     net-imap (0.5.5)
       date
