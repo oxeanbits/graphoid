@@ -97,4 +97,29 @@ describe 'MutationCreateOrUpdate', type: :request do
       expect(existing2.float_field).to eq(3.0)
     end
   end
+
+  context 'intercepting the matching record' do
+    it 'does not find the matching record and creates an object' do
+      existing = Account.create!(string_field: 'hook', integer_field: 5)
+      
+      @query = %{
+        mutation {
+          createOrUpdateAccount(
+          where: { integerField: 5 }
+          data: {
+            floatField: 3.2,
+          }) {
+            id
+          }
+        }
+      }
+
+      subject
+      existing.reload
+      persisted = Account.find(subject['id'])
+
+      expect(existing.float_field).to be_nil
+      expect(persisted.float_field).to eq(3.2)
+    end
+  end
 end
