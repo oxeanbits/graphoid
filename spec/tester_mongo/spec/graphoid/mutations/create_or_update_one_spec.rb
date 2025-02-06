@@ -100,7 +100,8 @@ describe 'MutationCreateOrUpdate', type: :request do
 
   context 'intercepting the matching record' do
     it 'does not find the matching record and creates an object' do
-      existing = Account.create!(string_field: 'hook', integerField: 5)
+      existing = Account.create!(integerField: 5)
+      existing.set(string_field: 'hook')
       
       @query = %{
         mutation {
