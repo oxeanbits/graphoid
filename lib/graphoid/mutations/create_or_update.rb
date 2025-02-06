@@ -21,8 +21,8 @@ module Graphoid
             begin
               user = context[:current_user]
 
-              object = if model.respond_to?(:resolve_one)
-                          model.resolve_one(self, nil, where.to_h)
+              object = if model.respond_to?(:resolve_find_before_create_or_update)
+                          model.resolve_find_before_create_or_update(self, where.to_h)
                         else
                           model.where(where.to_h).first
                         end

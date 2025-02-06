@@ -67,6 +67,10 @@ class Account
     where.not(string_field: 'hook').find(id)
   end
 
+  def self.resolve_find_before_create_or_update(resolver, filter)
+    resolve_one(resolver, nil, filter)
+  end
+
   def self.resolve_one(resolver, id, filter)
     result = where.not(string_field: 'hook')
     result = Graphoid::Queries::Processor.execute(result, filter.to_h)
