@@ -47,7 +47,7 @@ GEM
     drb (2.2.1)
     erubi (1.13.1)
     fiber-storage (1.0.0)
-    graphql (2.4.12)
+    graphql (2.4.13)
       base64
       fiber-storage
       logger
@@ -144,7 +144,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack
   activemodel
-  graphql (~> 2.4.12)
+  graphql (~> 2.4.13)
   mongoid
   pry-byebug
   rspec-rails
