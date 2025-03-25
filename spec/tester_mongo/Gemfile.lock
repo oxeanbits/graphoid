@@ -102,7 +102,7 @@ GEM
     debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
-    diff-lcs (1.6.0)
+    diff-lcs (1.6.1)
     drb (2.2.1)
     erubi (1.13.1)
     fiber-storage (1.0.0)
