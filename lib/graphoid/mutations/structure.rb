@@ -12,10 +12,5 @@ module Graphoid
       Graphoid::Mutations::Update.build(model)
       Graphoid::Mutations::Delete.build(model)
     end
-
-    def log_error(error)
-      Rails.logger.error("GRAPHOID rescue { #{self.class}: '#{error.backtrace&.join("\n")}' }")
-      Rails.logger.error("GRAPHOID rescue { #{self.class}: '#{error.message}' }")
-    end
   end
 end

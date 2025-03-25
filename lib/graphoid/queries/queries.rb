@@ -38,7 +38,7 @@ module Graphoid
             return model.find(id) if id
             Processor.execute(model, where.to_h).first
           rescue Exception => ex
-            log_error(ex)
+            Utils.log_error(grapho.name, ex)
             GraphQL::ExecutionError.new(ex.message)
           end
         end
@@ -67,16 +67,11 @@ module Graphoid
             result = result.order(order).limit(limit)
             Graphoid.driver.skip(result, skip)
           rescue Exception => ex
-            log_error(ex)
+            Utils.log_error(grapho.plural, ex)
             GraphQL::ExecutionError.new(ex.message)
           end
         end
       end
-    end
-
-    def log_error(error)
-      Rails.logger.error("GRAPHOID rescue { #{self.class}: '#{error.backtrace&.join("\n")}' }")
-      Rails.logger.error("GRAPHOID rescue { #{self.class}: '#{error.message}' }")
     end
   end
 end
