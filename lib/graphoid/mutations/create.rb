@@ -22,6 +22,7 @@ module Graphoid
               data = model.before_resolve_create(self, data) if model.respond_to?(:before_resolve_create)
               Graphoid::Mutations::Processor.execute(model, grapho, data, user)
             rescue Exception => ex
+              Utils.log_error(name, ex)
               GraphQL::ExecutionError.new(ex.message)
             end
           end
