@@ -32,6 +32,7 @@ module Graphoid
               result.destroy!
               result
             rescue Exception => ex
+              log_error(ex)
               GraphQL::ExecutionError.new(ex.message)
             end
           end
@@ -45,6 +46,7 @@ module Graphoid
               objects.destroy_all
               objects.all.to_a
             rescue Exception => ex
+              log_error(ex)
               GraphQL::ExecutionError.new(ex.message)
             end
           end

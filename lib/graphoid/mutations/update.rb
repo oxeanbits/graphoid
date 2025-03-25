@@ -36,6 +36,7 @@ module Graphoid
               object.update!(attrs)
               object.reload
             rescue Exception => ex
+              log_error(ex)
               GraphQL::ExecutionError.new(ex.message)
             end
           end
@@ -51,6 +52,7 @@ module Graphoid
               objects.update_all(attrs)
               objects.all.to_a
             rescue Exception => ex
+              log_error(ex)
               GraphQL::ExecutionError.new(ex.message)
             end
           end
