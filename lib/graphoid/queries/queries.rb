@@ -38,6 +38,7 @@ module Graphoid
             return model.find(id) if id
             Processor.execute(model, where.to_h).first
           rescue Exception => ex
+            Utils.log_error(grapho.name, ex)
             GraphQL::ExecutionError.new(ex.message)
           end
         end
@@ -66,6 +67,7 @@ module Graphoid
             result = result.order(order).limit(limit)
             Graphoid.driver.skip(result, skip)
           rescue Exception => ex
+            Utils.log_error(grapho.plural, ex)
             GraphQL::ExecutionError.new(ex.message)
           end
         end

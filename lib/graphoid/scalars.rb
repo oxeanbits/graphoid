@@ -12,6 +12,7 @@ module Graphoid
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
+              Utils.log_error('::Scalars::DateTime', ex)
               GraphQL::ExecutionError.new(ex)
             end
           end
@@ -25,6 +26,7 @@ module Graphoid
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
+              Utils.log_error('::Scalars::Date', ex)
               GraphQL::ExecutionError.new(ex)
             end
           end
@@ -38,6 +40,7 @@ module Graphoid
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
+              Utils.log_error('::Scalars::Time', ex)
               GraphQL::ExecutionError.new(ex)
             end
           end
@@ -51,6 +54,7 @@ module Graphoid
             begin
               ::DateTime.iso8601(value)
             rescue Exception => ex
+              Utils.log_error('::Scalars::Timestamp', ex)
               GraphQL::ExecutionError.new(ex)
             end
           end
@@ -69,6 +73,7 @@ module Graphoid
             begin
               value.to_i
             rescue Exception => ex
+              Utils.log_error('::Scalars::BigInt', ex)
               GraphQL::ExecutionError.new(ex)
             end
           end
@@ -85,13 +90,15 @@ module Graphoid
 
           def self.coerce_input(input_value, _ctx)
             input_value.to_h
-          rescue StandardError
+          rescue StandardError => ex
+            Utils.log_error('::Scalars::Hash Input', ex)
             raise GraphQL::CoercionError, "#{input_value.inspect} is not a valid Hash"
           end
 
           def self.coerce_result(ruby_value, _ctx)
             ruby_value.to_h
-          rescue StandardError
+          rescue StandardError => ex
+            Utils.log_error('::Scalars::Hash Result', ex)
             raise GraphQL::CoercionError, "#{ruby_value.inspect} is not a valid Hash"
           end
         end

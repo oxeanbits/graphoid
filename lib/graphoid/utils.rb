@@ -58,6 +58,12 @@ module Graphoid
         attrs['updated_by_id'] = user.id if user && fields.include?('updated_by_id')
         attrs
       end
+
+      def log_error(type, error)
+        type = type.camelize
+        Rails.logger.error("GRAPHOID rescue { #{type}: '#{error.backtrace&.join("\n")}' }")
+        Rails.logger.error("GRAPHOID rescue { #{type}: '#{error.message}' }")
+      end
     end
   end
 end
