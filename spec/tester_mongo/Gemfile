@@ -15,7 +15,7 @@ gem "mongoid"
 gem "puma", "~> 6.6"
 
 # Use graphql gem for handle API
-gem 'graphql', "~> 2.5.5"
+gem 'graphql', "~> 2.5.7"
 
 gem 'graphoid', path: "../../", require: 'graphoid/graphoid'
 
