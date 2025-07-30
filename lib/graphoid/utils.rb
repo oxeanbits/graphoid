@@ -65,7 +65,7 @@ module Graphoid
         Rails.logger.error("GRAPHOID rescue { #{type}: '#{error.message}' }")
       end
 
-      def treat_know_error_message(error_message, name)
+      def treat_known_error_messages(error_message, name)
         known_error_codes = {
           'E11000' => 'mutations.create.errors.duplicate_key'
         }
