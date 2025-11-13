@@ -172,7 +172,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    puma (6.6.1)
+    puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.4)
@@ -264,7 +264,7 @@ DEPENDENCIES
   graphql (~> 2.5.14)
   mongoid
   pry-byebug
-  puma (~> 6.6)
+  puma (~> 7.1)
   rails (~> 7.1.3)
   rspec-rails
   sqlite3 (~> 1.6)
