@@ -12,7 +12,7 @@ gem "sqlite3", "~> 1.6"
 gem "mongoid"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 6.6"
+gem "puma", "~> 7.1"
 
 # Use graphql gem for handle API
 gem 'graphql', "~> 2.5.14"
