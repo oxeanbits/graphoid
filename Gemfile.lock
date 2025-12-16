@@ -88,7 +88,7 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
-    psych (5.2.6)
+    psych (5.3.0)
       date
       stringio
     racc (1.8.1)
