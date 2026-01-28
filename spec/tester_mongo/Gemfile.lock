@@ -241,7 +241,7 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.6)
+    rspec-support (3.13.7)
     securerandom (0.4.1)
     sqlite3 (1.6.9-x86_64-linux)
     stringio (3.2.0)
