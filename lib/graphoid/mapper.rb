@@ -4,7 +4,7 @@ module Graphoid
   module Mapper
     class << self
       def convert(field)
-        return GraphQL::Types::ID if field.name.end_with?('id')
+        return GraphQL::Types::ID if field.name.end_with?('_id')
 
         Graphoid.driver.types_map[field.type] || GraphQL::Types::String
       end
