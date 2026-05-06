@@ -73,13 +73,15 @@ GEM
     mongo (2.24.0)
       base64
       bson (>= 4.14.1, < 6.0.0)
-    mongoid (9.0.10)
+    mongoid (9.0.11)
       activemodel (>= 5.1, < 8.2, != 7.0.0)
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
+      ostruct
     mutex_m (0.3.0)
     nokogiri (1.15.7-x86_64-linux)
       racc (~> 1.4)
+    ostruct (0.6.3)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
