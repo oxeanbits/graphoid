@@ -10,7 +10,7 @@ gem 'actionpack'
 gem "mongoid"
 
 # Use graphql gem for handle API
-gem 'graphql', "~> 2.6.5"
+gem 'graphql', "~> 2.6.6"
 
 group :development, :test do
   gem "pry-byebug"
