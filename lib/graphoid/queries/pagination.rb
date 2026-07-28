@@ -8,6 +8,22 @@ module Graphoid
       models.each { |model| Graphoid::Queries::Pagination.build(model) }
     end
 
+    def self.prepare_paginated_scope(model, scope, lookahead)
+      return model.graphoid_prepare_paginated_scope(scope, lookahead: lookahead) if
+        model.respond_to?(:graphoid_prepare_paginated_scope)
+      return scope unless scope.respond_to?(:lookahead)
+
+      scope.lookahead(scope, lookahead) || scope
+    end
+
+    def self.load_paginated_data(model, scope, lookahead)
+      return model.graphoid_load_paginated_data(scope, lookahead: lookahead) if
+        model.respond_to?(:graphoid_load_paginated_data)
+      return scope.eager_load if scope.respond_to?(:eager_load)
+
+      scope
+    end
+
     def self.build(model)
       Graphoid.initialize
       grapho = Graphoid.build(model)
@@ -31,11 +47,8 @@ module Graphoid
         field :data, [grapho.type], null: true, extras: [:lookahead]
 
         define_method(:data) do |lookahead:|
-          if model.respond_to?(:graphoid_load_paginated_data)
-            model.graphoid_load_paginated_data(object, lookahead: lookahead)
-          else
-            object
-          end
+          scope = Graphoid::Queries::Pagination.prepare_paginated_scope(model, object, lookahead)
+          Graphoid::Queries::Pagination.load_paginated_data(model, scope, lookahead)
         end
 
         def page_size
