@@ -151,7 +151,7 @@ GEM
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
       ostruct
-    msgpack (1.8.0)
+    msgpack (1.8.2)
     mutex_m (0.3.0)
     net-imap (0.6.4.1)
       date
