@@ -2,14 +2,23 @@
 
 module Graphoid
   class Relation
-    attr_reader :name, :klass, :type, :inverse_name
+    attr_reader :name, :klass, :type, :inverse_name, :metadata
 
     def initialize(relation)
+      @metadata = relation
       @name = relation.name.to_s
       @camel_name = Utils.camelize(@name)
       @inverse_name = Graphoid.driver.inverse_name_of(relation)
       @klass = relation.class_name.constantize
       @type = Graphoid.driver.relation_type(relation)
+    end
+
+    def foreign_key
+      metadata.foreign_key.to_s
+    end
+
+    def primary_key
+      metadata.primary_key.to_s
     end
 
     %i[has_and_belongs_to_many through has_many belongs_to has_one embeds_one embeds_many embedded_in].each do |type|
@@ -49,12 +58,27 @@ module Graphoid
     def create(_, _, _); end
 
     def resolve(operation)
-      if one? || operation.operand.embedded?
-        return operation.operand.exec(operation.scope, operation.value)
+      if operation.operand.embedded?
+        return operation.operand.exec(operation.scope, operation.value, context: operation.context)
+      end
+
+      if one?
+        return Graphoid.driver.relate_one(
+          operation.scope,
+          operation.operand,
+          operation.value,
+          context: operation.context
+        )
       end
 
       if many?
-        return Graphoid.driver.relate_many(operation.scope, operation.operand, operation.value, operation.operator)
+        return Graphoid.driver.relate_many(
+          operation.scope,
+          operation.operand,
+          operation.value,
+          operation.operator,
+          context: operation.context
+        )
       end
     end
 

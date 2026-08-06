@@ -33,9 +33,18 @@ module Graphoid
 
   class Configuration
     attr_accessor :driver
+    attr_reader :relation_filter_max_keys
 
     def initialize
       @driver = :mongoid
+      @relation_filter_max_keys = 10_000
+    end
+
+    def relation_filter_max_keys=(value)
+      max_keys = Integer(value)
+      raise ArgumentError, 'relation_filter_max_keys must be positive' unless max_keys.positive?
+
+      @relation_filter_max_keys = max_keys
     end
   end
 end

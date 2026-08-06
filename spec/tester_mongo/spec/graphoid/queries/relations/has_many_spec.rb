@@ -73,12 +73,6 @@ describe 'QueryHasMany', type: :request do
         }
       }
 
-      if ENV['DRIVER'] == 'mongo'
-        # TODO: build the _every division for mongoid
-        pending
-        raise
-      end
-
       expect(subject.size).to eq(2)
       expect(subject[0]['id']).to eq a0.id.to_s
       expect(subject[0]['labels'][0]['id']).to eq l0.id.to_s

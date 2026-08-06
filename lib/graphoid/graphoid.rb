@@ -19,6 +19,8 @@ require 'graphoid/operators/inherited/many_to_many'
 
 require 'graphoid/queries/queries'
 require 'graphoid/queries/pagination'
+require 'graphoid/queries/execution_context'
+require 'graphoid/queries/relation_filter_cardinality_error'
 require 'graphoid/queries/processor'
 require 'graphoid/queries/operation'
 

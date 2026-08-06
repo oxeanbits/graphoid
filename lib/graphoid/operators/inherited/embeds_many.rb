@@ -9,11 +9,11 @@ module Graphoid
       end
     end
 
-    def exec(_scope, value)
+    def exec(_scope, value, context: nil)
       _hash = {}
 
       value.each do |key, _value|
-        operation = Operation.new(klass, key, _value)
+        operation = Operation.new(klass, key, _value, context: context)
         parsed = Graphoid.driver.parse(operation.operand, operation.value, operation.operator, klass.to_s.underscore.pluralize)
         _hash.merge!(parsed)
       end

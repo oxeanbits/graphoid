@@ -155,9 +155,11 @@ module Graphoid
         scope.and(parsed)
       end
 
-      def execute_or(scope, list)
+      def execute_or(scope, list, context: nil)
+        context ||= Graphoid::Queries::ExecutionContext.new
+
         list.map! do |object|
-          Graphoid::Queries::Processor.execute(scope, object).selector
+          Graphoid::Queries::Processor.execute(scope, object, context: context).selector
         end
         scope.any_of(list)
       end
@@ -185,14 +187,14 @@ module Graphoid
         parsed
       end
 
-      def relate_embedded(scope, relation, filters)
+      def relate_embedded(scope, relation, filters, context: nil)
         # TODO: this way of fetching this is not recursive as the regular fields
         # because the structure of the query is embeeded.field = value
         # we need more brain cells on this problem because it does not allow
         # to filter things using OR/AND
         parsed = {}
         filters.each do |key, value|
-          operation = Operation.new(scope, key, value)
+          operation = Operation.new(scope, key, value, context: context)
           attribute = OpenStruct.new(name: "#{relation.name}.#{operation.operand}")
           obj = parse(attribute, value, operation.operator).first
           parsed[obj[0]] = obj[1]
@@ -200,45 +202,95 @@ module Graphoid
         parsed
       end
 
-      def relate_one(scope, relation, value)
-        field = relation.name
-        parsed = {}
+      def relate_one(scope, relation, value, context: nil)
+        return relate_embedded(scope, relation, value, context: context) if relation.embeds_one?
 
-        parsed = relate_embedded(scope, relation, value) if relation.embeds_one?
-
-        parsed = relation.exec(scope, value) if relation.belongs_to?
-
-        parsed = relation.exec(scope, value) if relation.has_one?
-
-        parsed
+        correlate_referenced_relation(scope, relation, value, 'some', context: context)
       end
 
-      def relate_many(scope, relation, value, operator)
-        field_name = relation.inverse_name || scope.name.underscore
-        target = Graphoid::Queries::Processor.execute(relation.klass, value).to_a
+      def relate_many(scope, relation, value, operator, context: nil)
+        return {} if relation.embeds_many?
+        return correlate_every_relation(scope, relation, value, context: context) if operator == 'every'
 
-        if relation.embeds_many?
-          # TODO: not implemented at all.
-        end
+        correlate_referenced_relation(scope, relation, value, operator, context: context)
+      end
 
-        if relation.many_to_many?
-          field_name = field_name.to_s.singularize + '_ids'
-          ids = target.map(&field_name.to_sym)
-          ids.flatten!.uniq!
+      def correlate_referenced_relation(scope, relation, filters, operator, context: nil)
+        parent_key, target_key = correlation_keys(relation)
+        reachable_keys = project_distinct_keys(scope, parent_key)
+        target_scope = correlated_target_scope(scope, relation, target_key, reachable_keys, context)
+        matching_keys = matching_relation_keys(target_scope, target_key, filters, context)
+        comparison = operator == 'none' ? 'nin' : 'in'
+
+        parse(Attribute.new(name: parent_key, type: nil), matching_keys, comparison)
+      end
+
+      def correlate_every_relation(scope, relation, filters, context: nil)
+        parent_key, target_key = correlation_keys(relation)
+        reachable_keys = project_distinct_keys(scope, parent_key)
+        target_scope = correlated_target_scope(scope, relation, target_key, reachable_keys, context)
+        violating_keys = violating_relation_keys(target_scope, target_key, filters, context)
+
+        parse(Attribute.new(name: parent_key, type: nil), violating_keys, 'nin')
+      end
+
+      def correlation_keys(relation)
+        if relation.belongs_to? || relation.many_to_many?
+          [relation.foreign_key, relation.primary_key]
         else
-          field_name = field_name.to_s + '_id'
-          ids = target.map(&field_name.to_sym)
+          [relation.primary_key, relation.foreign_key]
         end
+      end
 
-        parsed = {}
-        if operator == 'none'
-          parsed[:id.nin] = ids
-        elsif operator == 'some'
-          parsed[:id.in] = ids
-        elsif operator == 'every'
-          # missing implementation
-        end
-        parsed
+      def correlated_target_scope(parent_scope, relation, target_key, reachable_keys, context)
+        return nil if reachable_keys.empty?
+
+        correlation = parse(Attribute.new(name: target_key, type: nil), reachable_keys, 'in')
+        authorized_scope = context.scope_for(
+          relation.klass,
+          relation: relation.metadata,
+          parent_scope: parent_scope
+        )
+        execute_and(authorized_scope, correlation)
+      end
+
+      def matching_relation_keys(target_scope, target_key, filters, context)
+        return [] unless target_scope
+
+        matching_scope = Graphoid::Queries::Processor.execute(target_scope, filters, context: context)
+        project_distinct_keys(matching_scope, target_key)
+      end
+
+      def violating_relation_keys(target_scope, target_key, filters, context)
+        return [] unless target_scope
+
+        matching_scope = Graphoid::Queries::Processor.execute(target_scope, filters, context: context)
+        violating_scope = target_scope.and('$nor' => [matching_scope.selector])
+        project_distinct_keys(violating_scope, target_key)
+      end
+
+      def project_distinct_keys(scope, field)
+        criteria = scope.respond_to?(:selector) ? scope : scope.all
+        storage_field = criteria.klass.database_field_name(field.to_s)
+        max_keys = Graphoid.configuration.relation_filter_max_keys
+        pipeline = projection_pipeline(criteria, storage_field, max_keys)
+        keys = criteria.collection.aggregate(pipeline).map { |document| document['_id'] }
+
+        return keys if keys.length <= max_keys
+
+        raise RelationFilterCardinalityError,
+              "Relation filter exceeded #{max_keys} distinct keys for #{criteria.klass.name}.#{field}"
+      end
+
+      def projection_pipeline(criteria, storage_field, max_keys)
+        pipeline = []
+        pipeline << { '$match' => criteria.selector } unless criteria.selector.empty?
+        pipeline << { '$project' => { '__graphoid_key' => "$#{storage_field}" } }
+        pipeline << { '$unwind' => '$__graphoid_key' }
+        pipeline << { '$match' => { '__graphoid_key' => { '$ne' => nil } } }
+        pipeline << { '$group' => { '_id' => '$__graphoid_key' } }
+        pipeline << { '$limit' => max_keys + 1 }
+        pipeline
       end
     end
   end

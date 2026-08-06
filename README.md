@@ -34,6 +34,7 @@ API by select the models to generate Types, Queries and Mutations.
 Rails.application.config.after_initialize do
   Graphoid.configure do |config|
     config.driver = :mongoid
+    config.relation_filter_max_keys = 10_000
   end
 
   Graphoid.initialize
@@ -41,6 +42,15 @@ Rails.application.config.after_initialize do
   Graphoid::Queries.generate(User, Contract)
   Graphoid::Mutations.generate(User, Contract)
 end
+```
+
+Referenced relation filters are correlated with the current parent scope before the related model is queried. `relation_filter_max_keys` bounds the distinct association keys carried between the correlated queries so unexpectedly broad filters fail instead of exhausting application memory or creating oversized MongoDB selectors.
+
+Applications can authorize each referenced target scope with an explicit execution context. Scope providers receive the target model, Mongoid association metadata, and the already-scoped parent criteria:
+
+```ruby
+context = Graphoid::Queries::ExecutionContext.new(scope_provider)
+Graphoid::Queries::Processor.execute(records, filters, context: context)
 ```
 
 ## Examples
@@ -56,7 +66,7 @@ In this same repository.
 - Aggregations
 - Permissions on fields
 - Relation with aliases tests
-- Write division for "every" in Mongoid and AR
+- Write division for "every" in Active Record
 - Sort top level models by association values
 - Filter by Array or Hash.
 - has_one_through implementation

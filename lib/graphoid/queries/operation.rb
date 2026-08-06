@@ -2,15 +2,16 @@
 
 module Graphoid
   class Operation
-    attr_reader :scope, :operand, :operator, :value
+    attr_reader :scope, :operand, :operator, :value, :context
 
     OPERATORS_REGEX = /^(.+)_(lt|lte|gt|gte|contains|not|in|nin|regex|some|none|every)$/.freeze
 
-    def initialize(scope, key, value, camelize: false)
+    def initialize(scope, key, value, camelize: false, context: nil)
       # camelize it because graphql 2.0 is passing keys as symbols using underscore format
       # but for queries we need the underscore format to identify operators such as contains, regex
       key = key.to_s.camelcase(:lower) if camelize
       @scope = scope
+      @context = context || Graphoid::Queries::ExecutionContext.new
       @operator = nil
       @operand = key
       @value = value
@@ -56,4 +57,3 @@ module Graphoid
     end
   end
 end
-
