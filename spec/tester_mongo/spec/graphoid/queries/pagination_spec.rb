@@ -91,12 +91,12 @@ describe GraphqlController, type: :controller do
       before do
         arguments = hook_arguments
         selected_name = level2.name
-        Level.define_singleton_method(:graphoid_prepare_paginated_scope) do |scope, lookahead:|
+        Level.define_singleton_method(:graphoid_lookahead) do |scope, lookahead:|
           arguments[:prepare_scope] = scope
           arguments[:prepare_lookahead] = lookahead
           arguments[:prepared_scope] = scope.where(name: selected_name)
         end
-        Level.define_singleton_method(:graphoid_load_paginated_data) do |scope, lookahead:|
+        Level.define_singleton_method(:graphoid_eager_load) do |scope, lookahead:|
           arguments[:load_scope] = scope
           arguments[:load_lookahead] = lookahead
           scope.to_a
@@ -106,8 +106,8 @@ describe GraphqlController, type: :controller do
       end
 
       after do
-        Level.singleton_class.remove_method(:graphoid_prepare_paginated_scope)
-        Level.singleton_class.remove_method(:graphoid_load_paginated_data)
+        Level.singleton_class.remove_method(:graphoid_lookahead)
+        Level.singleton_class.remove_method(:graphoid_eager_load)
       end
 
       it 'passes the resolved scope and lookahead through both model hooks' do
