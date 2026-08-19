@@ -17,6 +17,7 @@ module Graphoid
             m = self
             argument(:OR,  -> { [m] }, required: false)
             argument(:AND, -> { [m] }, required: false)
+            argument :limit, GraphQL::Types::Int, required: false
 
             Attribute.fields_of(model).each do |field|
               type = Graphoid::Mapper.convert(field)

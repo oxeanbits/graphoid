@@ -59,6 +59,21 @@ describe 'QueryHasMany', type: :request do
       expect(subject[0]['labels'][1]['id']).to eq l5.id.to_s
     end
 
+    it 'limits a selected relation filter' do
+      @query = %{
+        query {
+          accounts {
+            id
+            labels(where: { name: "a", limit: 1 }) {
+              id
+            }
+          }
+        }
+      }
+
+      expect(subject).to all(include('labels' => have_attributes(size: 1)))
+    end
+
     it 'filters _every on has_many' do
       @query = %{
         query {

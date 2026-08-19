@@ -35,5 +35,19 @@ describe 'QueryBelongsTo', type: :request do
       expect(subject[0]['account']['id']).to eq a1.id.to_s
       expect(subject[1]['account']['id']).to eq a2.id.to_s
     end
+
+    it 'limits a nested relation filter before matching the parent records' do
+      @query = %{
+        query {
+          people(where: {
+            account: { stringField_contains: "boc", limit: 1 }
+          }) {
+            id
+          }
+        }
+      }
+
+      expect(subject.size).to eq(1)
+    end
   end
 end

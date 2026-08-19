@@ -5,11 +5,22 @@ module Graphoid
     module Processor
       class << self
         def execute(scope, object)
+          limit = nil
+
           object.each do |key, value|
             key = key.to_s if key.is_a? Symbol
+            if key == 'limit'
+              limit = value
+              next
+            end
+
             scope = process(scope, value, key)
           end
-          scope
+
+          return scope unless limit
+          return scope.limit(limit) if limit.is_a?(Integer) && limit.positive?
+
+          raise ArgumentError, 'Filter limit must be a positive integer'
         end
 
         def execute_array(scope, list, action)
@@ -44,4 +55,3 @@ module Graphoid
     end
   end
 end
-
