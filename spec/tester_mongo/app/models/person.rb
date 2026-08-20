@@ -8,5 +8,5 @@ class Person
   field :camelCase, type: String
   field :name, type: String
 
-  belongs_to :account
+  belongs_to :account, graphoid_nested_filter: true
 end
