@@ -13,11 +13,10 @@ RSpec.describe 'when querying generated relations' do
     expect(error.message).to include("doesn't accept argument '#{argument}'")
   end
 
-  it 'should reject a one-valued relation filter' do
-    expect_argument_not_accepted(
-      '{ people(where: { account: { id_not: null } }) { id } }',
-      'account'
-    )
+  it 'should allow an explicitly opted-in relation filter' do
+    errors = validation_errors('{ people(where: { account: { id_not: null } }) { id } }')
+
+    expect(errors).to be_empty
   end
 
   %w[some none every].each do |operator|
