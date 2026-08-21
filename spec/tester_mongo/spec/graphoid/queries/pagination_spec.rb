@@ -84,5 +84,83 @@ describe GraphqlController, type: :controller do
         )
       end
     end
+
+    context 'with paginated data model hooks', limit: 2, skip_param: 0 do
+      let(:hook_arguments) { {} }
+
+      before do
+        arguments = hook_arguments
+        selected_name = level2.name
+        Level.define_singleton_method(:graphoid_lookahead) do |scope, lookahead:|
+          arguments[:prepare_scope] = scope
+          arguments[:prepare_lookahead] = lookahead
+          arguments[:prepared_scope] = scope.where(name: selected_name)
+        end
+        Level.define_singleton_method(:graphoid_eager_load) do |scope, lookahead:|
+          arguments[:load_scope] = scope
+          arguments[:load_lookahead] = lookahead
+          scope.to_a
+        end
+
+        post :execute, params: { query: query }
+      end
+
+      after do
+        Level.singleton_class.remove_method(:graphoid_lookahead)
+        Level.singleton_class.remove_method(:graphoid_eager_load)
+      end
+
+      it 'passes the resolved scope and lookahead through both model hooks' do
+        expect(hook_arguments[:prepare_scope]).to be_a(Mongoid::Criteria)
+        expect(hook_arguments[:prepare_scope].options).to include(limit: 2, skip: 0)
+        expect(hook_arguments[:load_scope]).to equal(hook_arguments[:prepared_scope])
+        expect(hook_arguments[:load_lookahead]).to equal(hook_arguments[:prepare_lookahead])
+        selected_fields = hook_arguments[:prepare_lookahead].selections.map { |selection| selection.field.name }
+
+        expect(selected_fields).to contain_exactly('id', 'name', 'createdAt')
+      end
+
+      it 'uses the collection returned by the model hook' do
+        expect(JSON.parse(response.body)['data']['levels']['data']).to contain_exactly(
+          {
+            'id' => level2.id.to_s,
+            'name' => level2.name,
+            'createdAt' => level2.created_at.iso8601(3)
+          }
+        )
+      end
+    end
+
+    context 'with legacy model loading methods', limit: 2, skip_param: 0 do
+      let(:legacy_calls) { [] }
+
+      before do
+        calls = legacy_calls
+        hook_result = [level2]
+        Level.define_singleton_method(:lookahead) do |_scope, _lookahead|
+          calls << :lookahead
+          hook_result
+        end
+
+        post :execute, params: { query: query }
+      end
+
+      after do
+        Level.singleton_class.remove_method(:lookahead)
+      end
+
+      it 'falls back to the legacy lookahead convention' do
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['errors']).to be_nil
+        expect(JSON.parse(response.body)['data']['levels']['data']).to contain_exactly(
+          {
+            'id' => level2.id.to_s,
+            'name' => level2.name,
+            'createdAt' => level2.created_at.iso8601(3)
+          }
+        )
+        expect(legacy_calls).to eq([:lookahead])
+      end
+    end
   end
 end
