@@ -6,8 +6,9 @@ class User
 
   field :name, type: String
 
-  has_and_belongs_to_many :dependencies, class_name: 'User', inverse_of: :dependents
+  has_and_belongs_to_many :dependencies, class_name: 'User', inverse_of: :dependents,
+                                         graphoid_nested_filter: true
   has_and_belongs_to_many :dependents, class_name: 'User', inverse_of: :dependencies
 
-  has_and_belongs_to_many :accounts, inverse_of: :users
+  has_and_belongs_to_many :accounts, inverse_of: :users, graphoid_nested_filter: true
 end

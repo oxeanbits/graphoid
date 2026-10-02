@@ -4,30 +4,24 @@ module Graphoid
   module Resolvers
     def self.resolver_class(relation_class, relation_type, association)
       association_name = association.name
-      relation_name = Utils.graphqlize(relation_class.name)
 
       Class.new(GraphQL::Schema::Resolver) do
         type [relation_type], null: true
 
         self.const_set(:ASSOCIATION_NAME, association_name)
 
-        filter = Graphoid::Filters::LIST[relation_class]
-        filter = "Graphoid::Types::#{relation_name}Filter" unless filter
-        order  = Graphoid::Sorter::LIST[relation_class]
-        order = "Graphoid::Types::#{relation_name}Sorter" unless order
-
-        argument :where, filter, required: false
+        order = Graphoid::Sorter::LIST[relation_class]
+        order = "Graphoid::Types::#{Utils.graphqlize(relation_class.name)}Sorter" unless order
         argument :order, order, required: false
         argument :limit, GraphQL::Types::Int, required: false
         argument :skip,  GraphQL::Types::Int, required: false
 
-        def resolve(where: nil, order: nil, limit: nil, skip: nil)
+        def resolve(order: nil, limit: nil, skip: nil)
           obj = self.object
           processor = Graphoid::Queries::Processor
 
           association_name = self.class.const_get(:ASSOCIATION_NAME)
           result = obj.send(association_name)
-          result = processor.execute(result, where) if where.present?
 
           if order.present?
             order = processor.parse_order(obj.send(association_name), order)
