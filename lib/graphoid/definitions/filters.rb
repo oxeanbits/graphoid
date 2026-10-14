@@ -41,14 +41,13 @@ module Graphoid
             end
 
             Relation.relations_of(model).each do |name, relation|
-              relation_class = relation.class_name.safe_constantize
-              relation_name = Utils.graphqlize(relation_class.name)
+              next unless relation.options[:graphoid_nested_filter]
 
+              relation_class = relation.class_name.safe_constantize
               next unless relation_class
 
-              relation_filter = LIST[relation_class]
-              relation_filter = "Graphoid::Types::#{relation_name}Filter" unless relation_filter
-
+              relation_name = Utils.graphqlize(relation_class.name)
+              relation_filter = LIST[relation_class] || "Graphoid::Types::#{relation_name}Filter"
               relation_name = Utils.camelize(name)
 
               if Relation.new(relation).many?
@@ -56,7 +55,7 @@ module Graphoid
                   argument "#{relation_name}_#{suffix}", relation_filter, required: false, camelize: false
                 end
               else
-                argument relation_name.to_s, relation_filter, required: false, camelize: false
+                argument relation_name, relation_filter, required: false, camelize: false
               end
             end
           end
