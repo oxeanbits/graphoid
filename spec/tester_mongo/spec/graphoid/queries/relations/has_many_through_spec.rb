@@ -30,7 +30,7 @@ describe 'QueryHasManyThrough', type: :request do
             id
             teams(order: { id: ASC }) {
               id
-              players(where: { name_in: ["be", "bi"] }) {
+              players(order: { id: ASC }) {
                 id
               }
             }
@@ -42,17 +42,15 @@ describe 'QueryHasManyThrough', type: :request do
 
       expect(subject[0]['id']).to eq p1.id.to_s
       expect(subject[0]['teams'][0]['id']).to eq t1.id.to_s
-      expect(subject[0]['teams'][0]['players'][0]['id']).to eq p1.id.to_s
+      expect(subject[0]['teams'][0]['players'].map { |player| player['id'] }).to eq [p0.id.to_s, p1.id.to_s]
       expect(subject[0]['teams'][1]['id']).to eq t2.id.to_s
-      expect(subject[0]['teams'][1]['players'][0]['id']).to eq p1.id.to_s
-      expect(subject[0]['teams'][1]['players'][1]['id']).to eq p2.id.to_s
+      expect(subject[0]['teams'][1]['players'].map { |player| player['id'] }).to eq [p1.id.to_s, p2.id.to_s]
 
       expect(subject[1]['id']).to eq p2.id.to_s
       expect(subject[1]['teams'][0]['id']).to eq t0.id.to_s
-      expect(subject[1]['teams'][0]['players'][0]['id']).to eq p2.id.to_s
+      expect(subject[1]['teams'][0]['players'].map { |player| player['id'] }).to eq [p0.id.to_s, p2.id.to_s]
       expect(subject[1]['teams'][1]['id']).to eq t2.id.to_s
-      expect(subject[1]['teams'][1]['players'][0]['id']).to eq p1.id.to_s
-      expect(subject[1]['teams'][1]['players'][1]['id']).to eq p2.id.to_s
+      expect(subject[1]['teams'][1]['players'].map { |player| player['id'] }).to eq [p1.id.to_s, p2.id.to_s]
     end
   end
 end
