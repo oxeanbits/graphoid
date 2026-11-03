@@ -28,7 +28,7 @@ describe 'QueryHasAndBelongsToMany', type: :request do
             id
             accounts(order: { id: ASC }) {
               id
-              users(where: { name_in: ["be", "bi"] }) {
+              users(order: { id: ASC }) {
                 id
               }
             }
@@ -40,17 +40,15 @@ describe 'QueryHasAndBelongsToMany', type: :request do
 
       expect(subject[0]['id']).to eq u1.id.to_s
       expect(subject[0]['accounts'][0]['id']).to eq a1.id.to_s
-      expect(subject[0]['accounts'][0]['users'][0]['id']).to eq u1.id.to_s
+      expect(subject[0]['accounts'][0]['users'].map { |user| user['id'] }).to eq [u0.id.to_s, u1.id.to_s]
       expect(subject[0]['accounts'][1]['id']).to eq a2.id.to_s
-      expect(subject[0]['accounts'][1]['users'][0]['id']).to eq u1.id.to_s
-      expect(subject[0]['accounts'][1]['users'][1]['id']).to eq u2.id.to_s
+      expect(subject[0]['accounts'][1]['users'].map { |user| user['id'] }).to eq [u1.id.to_s, u2.id.to_s]
 
       expect(subject[1]['id']).to eq u2.id.to_s
       expect(subject[1]['accounts'][0]['id']).to eq a0.id.to_s
-      expect(subject[1]['accounts'][0]['users'][0]['id']).to eq u2.id.to_s
+      expect(subject[1]['accounts'][0]['users'].map { |user| user['id'] }).to eq [u0.id.to_s, u2.id.to_s]
       expect(subject[1]['accounts'][1]['id']).to eq a2.id.to_s
-      expect(subject[1]['accounts'][1]['users'][0]['id']).to eq u1.id.to_s
-      expect(subject[1]['accounts'][1]['users'][1]['id']).to eq u2.id.to_s
+      expect(subject[1]['accounts'][1]['users'].map { |user| user['id'] }).to eq [u1.id.to_s, u2.id.to_s]
     end
   end
 end

@@ -7,6 +7,7 @@ require 'graphoid/config'
 require 'graphoid/scalars'
 require 'graphoid/argument'
 require 'graphoid/graphield'
+require 'graphoid/mongoid_nested_filter'
 
 require 'graphoid/operators/attribute'
 require 'graphoid/operators/relation'
