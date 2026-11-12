@@ -39,15 +39,15 @@ class Account
 
   has_and_belongs_to_many :users
 
-  has_one :person
-  has_many :labels
+  has_one :person, graphoid_nested_filter: true
+  has_many :labels, graphoid_nested_filter: true
   belongs_to :house, optional: true
 
   belongs_to :created_by, class_name: 'User', optional: true
   belongs_to :updated_by, class_name: 'User', optional: true
 
-  embeds_one :value
-  embeds_many :snakes
+  embeds_one :value, graphoid_nested_filter: true
+  embeds_many :snakes, graphoid_nested_filter: true
 
   def self.before_resolve_create(model, data)
     if data[:string_field] == 'hook'
